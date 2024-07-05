@@ -1,1 +1,56 @@
-<h1>测试1</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>File Upload and Download</title>
+</head>
+<body>
+
+<h2>Upload and Download File</h2>
+
+<!-- 文件选择输入框 -->
+<input type="file" id="fileInput" />
+<button onclick="uploadFile()">Upload & Display</button>
+
+<!-- 显示文件名的区域 -->
+<p id="fileName"></p>
+
+<!-- 隐藏的iframe用于下载 -->
+<iframe id="hiddenIframe" style="display:none;"></iframe>
+
+<script>
+// 上传并显示文件的函数
+function uploadFile() {
+    var fileInput = document.getElementById('fileInput');
+    var file = fileInput.files[0];
+    if (file) {
+        var reader = new FileReader();
+        
+        // 当读取完成时执行的回调函数
+        reader.onloadend = function() {
+            var content = reader.result;
+            var fileName = document.getElementById('fileName');
+            
+            // 创建一个可点击的链接
+            var link = document.createElement('a');
+            link.href = content;
+            link.download = file.name;
+            link.innerHTML = 'Download ' + file.name;
+            
+            // 将链接添加到页面上
+            fileName.innerHTML = '';
+            fileName.appendChild(link);
+            
+            // 触发下载
+            var iframe = document.getElementById('hiddenIframe');
+            iframe.src = content;
+        };
+        
+        // 开始读取文件
+        reader.readAsDataURL(file);
+    }
+}
+</script>
+
+</body>
+</html>
