@@ -2,68 +2,80 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome Page</title>
-    <link rel="icon" href="file:///C:/Users/lenovo/Desktop/工具/娱乐/壁纸/36433e7c9eeb1dce73880836627cf05fc1b58143d9191a51e588d8de3780b6f8.png">
     <style>
         body {
             margin: 0;
             padding: 0;
-            background: url('file:///C:/Users/lenovo/Desktop/工具/娱乐/壁纸/20220422205121994.jpg') no-repeat center center fixed;
-            background-size: cover;
-            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        .welcome-page {
             display: flex;
             justify-content: center;
             align-items: center;
-            color: white;
-            font-family: Arial, sans-serif;
+            height: 100vh;
+            background-size: cover;
+            background-position: center;
+            transition: background-image 0.5s ease-in-out;
         }
-        .welcome-container {
-            text-align: center;
-        }
-        .welcome-container button {
+        .welcome-page button {
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
         }
-        .file-upload-container {
+        .main-page {
             display: none;
-            flex-direction: column;
-            align-items: center;
+            padding: 20px;
         }
-        .file-list {
-            list-style: none;
+        .main-page input[type="file"] {
+            display: block;
+            margin-bottom: 10px;
+        }
+        .main-page ul {
+            list-style-type: none;
             padding: 0;
         }
-        .file-list li {
-            margin: 10px 0;
-        }
-        .file-list a {
-            color: white;
+        .main-page ul li a {
             text-decoration: none;
+            color: blue;
         }
     </style>
 </head>
 <body>
-    <div class="welcome-container">
-        <h1>Welcome to Our Website</h1>
-        <button onclick="showUploadPage()">Enter Website</button>
+    <div class="welcome-page" id="welcomePage">
+        <input type="file" id="backgroundUpload" accept="image/*" style="display: none;">
+        <button onclick="uploadBackground()">Upload Background</button>
+        <button onclick="enterWebsite()">Enter Website</button>
     </div>
-    <div class="file-upload-container">
-        <h2>Upload and Share Files</h2>
-        <input type="file" id="fileInput" multiple>
-        <button onclick="uploadFiles()">Upload Files</button>
-        <ul class="file-list" id="fileList"></ul>
+    <div class="main-page" id="mainPage">
+        <h1>Main Website</h1>
+        <input type="file" id="fileUpload" multiple>
+        <ul id="fileList"></ul>
     </div>
 
     <script>
-        function showUploadPage() {
-            document.querySelector('.welcome-container').style.display = 'none';
-            document.querySelector('.file-upload-container').style.display = 'flex';
+        function uploadBackground() {
+            document.getElementById('backgroundUpload').click();
         }
 
-        function uploadFiles() {
-            const files = document.getElementById('fileInput').files;
+        document.getElementById('backgroundUpload').addEventListener('change', function(event) {
+            const file = event.target.files;
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('welcomePage').style.backgroundImage = `url(${e.target.result})`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function enterWebsite() {
+            document.getElementById('welcomePage').style.display = 'none';
+            document.getElementById('mainPage').style.display = 'block';
+        }
+
+        document.getElementById('fileUpload').addEventListener('change', function(event) {
+            const files = event.target.files;
             const fileList = document.getElementById('fileList');
             fileList.innerHTML = '';
             for (let i = 0; i < files.length; i++) {
@@ -76,7 +88,7 @@
                 li.appendChild(a);
                 fileList.appendChild(li);
             }
-        }
+        });
     </script>
 </body>
 </html>
