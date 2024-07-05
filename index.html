@@ -2,53 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome Page</title>
     <style>
         body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
-        .welcome-page {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             background-size: cover;
             background-position: center;
             transition: background-image 0.5s ease-in-out;
         }
-        .welcome-page button {
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .button {
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
         }
-        .main-page {
-            display: none;
-            padding: 20px;
-        }
-        .main-page input[type="file"] {
-            display: block;
-            margin-bottom: 10px;
-        }
-        .main-page ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        .main-page ul li a {
-            text-decoration: none;
-            color: blue;
-        }
     </style>
 </head>
 <body>
-    <div class="welcome-page" id="welcomePage">
+    <div class="container">
         <input type="file" id="backgroundUpload" accept="image/*" style="display: none;">
-        <button onclick="uploadBackground()">Upload Background</button>
-        <button onclick="enterWebsite()">Enter Website</button>
+        <button class="button" onclick="uploadBackground()">上传背景图片</button>
+        <button class="button" onclick="enterWebsite()">进入网站</button>
     </div>
-    <div class="main-page" id="mainPage">
-        <h1>Main Website</h1>
+
+    <div id="websiteContent" style="display: none;">
+        <h1>欢迎来到网站</h1>
         <input type="file" id="fileUpload" multiple>
         <ul id="fileList"></ul>
     </div>
@@ -63,15 +46,15 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    document.getElementById('welcomePage').style.backgroundImage = `url(${e.target.result})`;
+                    document.body.style.backgroundImage = `url(${e.target.result})`;
+                    document.getElementById('websiteContent').style.display = 'block';
                 };
                 reader.readAsDataURL(file);
             }
         });
 
         function enterWebsite() {
-            document.getElementById('welcomePage').style.display = 'none';
-            document.getElementById('mainPage').style.display = 'block';
+            document.getElementById('websiteContent').style.display = 'block';
         }
 
         document.getElementById('fileUpload').addEventListener('change', function(event) {
@@ -79,14 +62,13 @@
             const fileList = document.getElementById('fileList');
             fileList.innerHTML = '';
             for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                const li = document.createElement('li');
-                const a = document.createElement('a');
-                a.href = URL.createObjectURL(file);
-                a.download = file.name;
-                a.textContent = file.name;
-                li.appendChild(a);
-                fileList.appendChild(li);
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(files[i]);
+                link.download = files[i].name;
+                link.textContent = files[i].name;
+                listItem.appendChild(link);
+                fileList.appendChild(listItem);
             }
         });
     </script>
