@@ -1,56 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>File Upload and Download</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Page</title>
+    <link rel="icon" href="file:///C:/Users/lenovo/Desktop/工具/娱乐/壁纸/36433e7c9eeb1dce73880836627cf05fc1b58143d9191a51e588d8de3780b6f8">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('file:///C:/Users/lenovo/Desktop/工具/娱乐/壁纸/20220422205121994') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .welcome-container {
+            text-align: center;
+        }
+        .welcome-container button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .file-upload-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+        .file-list {
+            list-style: none;
+            padding: 0;
+        }
+        .file-list li {
+            margin: 10px 0;
+        }
+        .file-list a {
+            color: white;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
+    <div class="welcome-container">
+        <h1>Welcome to Our Website</h1>
+        <button onclick="showUploadPage()">Enter Website</button>
+    </div>
+    <div class="file-upload-container">
+        <h2>Upload and Share Files</h2>
+        <input type="file" id="fileInput" multiple>
+        <button onclick="uploadFiles()">Upload Files</button>
+        <ul class="file-list" id="fileList"></ul>
+    </div>
 
-<h2>Upload and Download File</h2>
+    <script>
+        function showUploadPage() {
+            document.querySelector('.welcome-container').style.display = 'none';
+            document.querySelector('.file-upload-container').style.display = 'flex';
+        }
 
-<!-- 文件选择输入框 -->
-<input type="file" id="fileInput" />
-<button onclick="uploadFile()">Upload & Display</button>
-
-<!-- 显示文件名的区域 -->
-<p id="fileName"></p>
-
-<!-- 隐藏的iframe用于下载 -->
-<iframe id="hiddenIframe" style="display:none;"></iframe>
-
-<script>
-// 上传并显示文件的函数
-function uploadFile() {
-    var fileInput = document.getElementById('fileInput');
-    var file = fileInput.files[0];
-    if (file) {
-        var reader = new FileReader();
-        
-        // 当读取完成时执行的回调函数
-        reader.onloadend = function() {
-            var content = reader.result;
-            var fileName = document.getElementById('fileName');
-            
-            // 创建一个可点击的链接
-            var link = document.createElement('a');
-            link.href = content;
-            link.download = file.name;
-            link.innerHTML = 'Download ' + file.name;
-            
-            // 将链接添加到页面上
-            fileName.innerHTML = '';
-            fileName.appendChild(link);
-            
-            // 触发下载
-            var iframe = document.getElementById('hiddenIframe');
-            iframe.src = content;
-        };
-        
-        // 开始读取文件
-        reader.readAsDataURL(file);
-    }
-}
-</script>
-
+        function uploadFiles() {
+            const files = document.getElementById('fileInput').files;
+            const fileList = document.getElementById('fileList');
+            fileList.innerHTML = '';
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(file);
+                a.download = file.name;
+                a.textContent = file.name;
+                li.appendChild(a);
+                fileList.appendChild(li);
+            }
+        }
+    </script>
 </body>
 </html>
