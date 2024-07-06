@@ -2,21 +2,66 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>刘杨的测试网页</title>
+    <title>刘杨的AI测试网页</title>
     <style>
-        .file-link {
-            color: blue;
-            cursor: pointer;
-            margin-bottom: 10px;
-        }
+        /* 添加一些基本的样式 */
+        body { font-family: Arial, sans-serif; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        .idea-list { list-style-type: none; padding: 0; }
+        .idea-list li { margin-bottom: 10px; }
+        .idea-list a { text-decoration: none; color: #333; }
     </style>
 </head>
 <body>
-    <h1>刘杨的测试网页</h1>
-    <div id="fileList"></div>
-    <input type="file" id="fileInput" multiple />
-    <button id="uploadButton">上传文件</button>
+    <div class="container">
+        <h1>刘杨的AI测试网页</h1>
+        <ul id="idea-list" class="idea-list"></ul>
+        <form id="idea-form">
+            <input type="text" id="idea-title" placeholder="请输入标题">
+            <textarea id="idea-content" placeholder="请输入内容"></textarea>
+            <button type="submit">保存</button>
+        </form>
+    </div>
 
-    <script src="main.js"></script>
+    <script>
+        // 初始化想法列表
+        let ideaList = JSON.parse(localStorage.getItem('ideaList')) || [];
+        updateIdeaList();
+
+        // 更新想法列表的显示
+        function updateIdeaList() {
+            const ideaListElement = document.getElementById('idea-list');
+            ideaListElement.innerHTML = '';
+            ideaList.forEach((idea, index) => {
+                const li = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#idea-${index}`;
+                link.textContent = idea.title;
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = '删除';
+                deleteButton.onclick = () => {
+                    ideaList.splice(index, 1);
+                    localStorage.setItem('ideaList', JSON.stringify(ideaList));
+                    updateIdeaList();
+                };
+                li.appendChild(link);
+                li.appendChild(deleteButton);
+                ideaListElement.appendChild(li);
+            });
+        }
+
+        // 处理表单提交
+        document.getElementById('idea-form').addEventListener('submit', event => {
+            event.preventDefault();
+            const title = document.getElementById('idea-title').value;
+            const content = document.getElementById('idea-content').value;
+            const newIdea = { title, content };
+            ideaList.push(newIdea);
+            localStorage.setItem('ideaList', JSON.stringify(ideaList));
+            updateIdeaList();
+            document.getElementById('idea-title').value = '';
+            document.getElementById('idea-content').value = '';
+        });
+    </script>
 </body>
 </html>
