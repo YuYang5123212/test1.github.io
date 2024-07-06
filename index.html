@@ -1,87 +1,65 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>刘杨的测试网页</title>
-    <style>
-        .file-link {
-            color: blue;
-            text-decoration: underline;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>刘杨的测试网页</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    h1 {
+      color: #333;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    ul li {
+      margin-top: 10px;
+    }
+    ul li a {
+      color: blue;
+      text-decoration: none;
+    }
+  </style>
 </head>
 <body>
-    <h1>刘杨的测试网页</h1>
-    <input type="file" id="fileInput" multiple>
-    <button onclick="uploadFiles()">上传文件</button>
-    <ul id="fileList"></ul>
-
-    <script>
-        function uploadFiles() {
-            const fileList = document.getElementById('fileInput').files;
-            const listElement = document.getElementById('fileList');
-
-            for (let i = 0; i < fileList.length; i++) {
-                const file = fileList[i];
-                const li = document.createElement('li');
-                const link = document.createElement('a');
-                const deleteButton = document.createElement('button');
-
-                link.href = URL.createObjectURL(file);
-                link.textContent = file.name;
-                link.className = 'file-link';
-                deleteButton.textContent = '删除';
-                deleteButton.onclick = () => {
-                    URL.revokeObjectURL(link.href);
-                    listElement.removeChild(li);
-                    updateLocalStorage();
-                };
-
-                li.appendChild(link);
-                li.appendChild(deleteButton);
-                listElement.appendChild(li);
-            }
-
-            updateLocalStorage();
+  <h1>刘杨的测试网页</h1>
+  <div id="fileList">
+    <ul>
+    </ul>
+  </div>
+  <input type="file" id="fileInput" multiple>
+  <button onclick="uploadFiles()">上传文件</button>
+  <script>
+    let fileLinks = [];
+    function uploadFiles() {
+      const fileInput = document.getElementById('fileInput');
+      const files = fileInput.files;
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const fileReader = new FileReader();
+        fileReader.onload = function (e) {
+          const fileName = file.name;
+          const fileUrl = URL.createObjectURL(file);
+          fileLinks.push({ name: fileName, url: fileUrl });
+          const listItem = document.createElement('li');
+          listItem.innerHTML = `<a href="${fileUrl}" download>${fileName}</a> <button onclick="deleteFile('${fileUrl}')">删除</button>`;
+          document.querySelector('#fileList ul').appendChild(listItem);
         }
-
-        function updateLocalStorage() {
-            const listElement = document.getElementById('fileList');
-            let data = [];
-            for (let child of listElement.children) {
-                const link = child.firstChild;
-                if (link) data.push({ name: link.textContent, url: link.href });
-            }
-            localStorage.setItem('fileList', JSON.stringify(data));
-        }
-
-        function loadFilesFromStorage() {
-            const listElement = document.getElementById('fileList');
-            const data = JSON.parse(localStorage.getItem('fileList'));
-            if (data) {
-                data.forEach(item => {
-                    const li = document.createElement('li');
-                    const link = document.createElement('a');
-                    const deleteButton = document.createElement('button');
-
-                    link.href = item.url;
-                    link.textContent = item.name;
-                    link.className = 'file-link';
-                    deleteButton.textContent = '删除';
-                    deleteButton.onclick = () => {
-                        URL.revokeObjectURL(link.href);
-                        listElement.removeChild(li);
-                        updateLocalStorage();
-                    };
-
-                    li.appendChild(link);
-                    li.appendChild(deleteButton);
-                    listElement.appendChild(li);
-                });
-            }
-        }
-
-        window.onload = loadFilesFromStorage;
-    </script>
+        fileReader.readAsDataURL(file);
+      }
+    }
+    function deleteFile(url) {
+      const index = fileLinks.findIndex(link => link.url === url);
+      if (index!== -1) {
+        fileLinks.splice(index, 1);
+        const element = document.querySelector(`[href='${url}']`).parentNode;
+        element.remove();
+      }
+    }
+  </script>
 </body>
 </html>
