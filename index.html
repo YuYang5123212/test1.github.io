@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>刘杨的测试网页</title>
+    <style>
+        .file-link {
+            color: blue;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>刘杨的测试网页</h1>
+    <input type="file" id="fileInput" multiple>
+    <button onclick="uploadFiles()">上传文件</button>
+    <ul id="fileList"></ul>
+
+    <script>
+        function uploadFiles() {
+            const fileList = document.getElementById('fileInput').files;
+            const listElement = document.getElementById('fileList');
+
+            for (let i = 0; i < fileList.length; i++) {
+                const file = fileList[i];
+                const li = document.createElement('li');
+                const link = document.createElement('a');
+                const deleteButton = document.createElement('button');
+
+                link.href = URL.createObjectURL(file);
+                link.textContent = file.name;
+                link.className = 'file-link';
+                deleteButton.textContent = '删除';
+                deleteButton.onclick = () => {
+                    URL.revokeObjectURL(link.href);
+                    listElement.removeChild(li);
+                    updateLocalStorage();
+                };
+
+                li.appendChild(link);
+                li.appendChild(deleteButton);
+                listElement.appendChild(li);
+            }
+
+            updateLocalStorage();
+        }
+
+        function updateLocalStorage() {
+            const listElement = document.getElementById('fileList');
+            let data = [];
+            for (let child of listElement.children) {
+                const link = child.firstChild;
+                if (link) data.push({ name: link.textContent, url: link.href });
+            }
+            localStorage.setItem('fileList', JSON.stringify(data));
+        }
+
+        function loadFilesFromStorage() {
+            const listElement = document.getElementById('fileList');
+            const data = JSON.parse(localStorage.getItem('fileList'));
+            if (data) {
+                data.forEach(item => {
+                    const li = document.createElement('li');
+                    const link = document.createElement('a');
+                    const deleteButton = document.createElement('button');
+
+                    link.href = item.url;
+                    link.textContent = item.name;
+                    link.className = 'file-link';
+                    deleteButton.textContent = '删除';
+                    deleteButton.onclick = () => {
+                        URL.revokeObjectURL(link.href);
+                        listElement.removeChild(li);
+                        updateLocalStorage();
+                    };
+
+                    li.appendChild(link);
+                    li.appendChild(deleteButton);
+                    listElement.appendChild(li);
+                });
+            }
+        }
+
+        window.onload = loadFilesFromStorage;
+    </script>
+</body>
+</html>
