@@ -1,169 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>刘杨的测试网页</title>
+    <style>
+        .file-link {
+            color: blue;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>刘杨的测试网页</h1>
+    <input type="file" id="fileInput" multiple>
+    <button onclick="uploadFiles()">上传文件</button>
+    <ul id="fileList"></ul>
 
-<!doctype html>
-<html lang="zh-cn"> 
-    <head> 
-        <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"> 
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>刘杨的测试网页</title> <meta name="description" content="上传一个文件，复制文件链接分享给朋友或发送到其它设备下载，轻松实现文件传送和文件分享。"/> 
-        <meta name="keywords" content="文件传送,文件分享,文件上传,文件分发,文件传输,文件存储,文件共享"/> 
-        <link rel="alternate" hrefLang="ar" href="https://upfile.live/ar/"/> 
-        <link rel="alternate" hrefLang="cs" href="https://upfile.live/cs/"/> 
-        <link rel="alternate" hrefLang="da" href="https://upfile.live/da/"/> 
-        <link rel="alternate" hrefLang="de" href="https://upfile.live/de/"/> 
-        <link rel="alternate" hrefLang="el" href="https://upfile.live/el/"/> 
-        <link rel="alternate" hrefLang="en" href="https://upfile.live/"/> 
-        <link rel="alternate" hrefLang="es" href="https://upfile.live/es/"/> 
-        <link rel="alternate" hrefLang="fr" href="https://upfile.live/fr/"/> 
-        <link rel="alternate" hrefLang="hi" href="https://upfile.live/hi/"/> 
-        <link rel="alternate" hrefLang="id" href="https://upfile.live/id/"/> 
-        <link rel="alternate" hrefLang="it" href="https://upfile.live/it/"/> 
-        <link rel="alternate" hrefLang="ja" href="https://upfile.live/ja/"/> 
-        <link rel="alternate" hrefLang="ko" href="https://upfile.live/ko/"/> 
-        <link rel="alternate" hrefLang="nl" href="https://upfile.live/nl/"/> 
-        <link rel="alternate" hrefLang="pl" href="https://upfile.live/pl/"/> 
-        <link rel="alternate" hrefLang="pt" href="https://upfile.live/pt/"/> 
-        <link rel="alternate" hrefLang="ru" href="https://upfile.live/ru/"/> 
-        <link rel="alternate" hrefLang="sv" href="https://upfile.live/sv/"/> 
-        <link rel="alternate" hrefLang="th" href="https://upfile.live/th/"/> 
-        <link rel="alternate" hrefLang="vi" href="https://upfile.live/vi/"/> 
-        <link rel="alternate" hrefLang="x-default" href="https://upfile.live/zh-cn/"/> 
-        <link rel="alternate" hrefLang="zh-tw" href="https://upfile.live/zh-tw/"/> 
-        <link rel="canonical" href="https://upfile.live/zh-cn/"> 
-        <script type="application/ld+json">{"@context":"http://schema.org","@type":"WebApplication","name":"即时传 - 在线文件传送","description":"上传一个文件，复制文件链接分享给朋友或发送到其它设备下载，轻松实现文件传送和文件分享。","url":"https://upfile.live/zh-cn/","applicationCategory":"Utility","operatingSystem":"Web","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
-        <link type="image/x-icon" rel="shortcut icon" href="/assets/images/logo.png"> 
-        <link rel="stylesheet" href="/assets/css/bundle.min.css?v=1.12">
-        <link rel="stylesheet" href="/assets/css/common.css?v=1.2122">
-    </head> 
-    <body class="page-index"> <header id="header"> 
-        <div class="grid-container fluid"> 
-            <div class="grid-x grid-margin-x"> 
-                <div class="cell large-12 small-12"> 
-                    <div class="logo"><a href="/zh-cn/">即时传</a></div> <ul class="top-nav"> 
-                        <li><a href="/zh-cn/">首页</a></li> 
-                        <li> <div class="lang-btn"> <span>中文-简体</span> <ul class="active">
-                            <li class=""> <a href="/ar/">العربية</a> </li>
-                            <li class=""> <a href="/cs/">Čeština</a> </li> 
-                            <li class=""> <a href="/da/">Dansk</a> </li> 
-                            <li class=""> <a href="/de/">Deutsch</a> </li> 
-                            <li class=""> <a href="/el/">Ελληνικά</a> </li>
-                            <li class=""> <a href="/">English</a> </li> 
-                            <li class=""> <a href="/es/">Español</a> </li>
-                            <li class=""> <a href="/fr/">Français</a> </li> 
-                            <li class=""> <a href="/hi/">हिन्दी</a> </li> 
-                            <li class=""> <a href="/id/">Bahasa Indonesia</a> 
-                            </li> <li class=""> <a href="/it/">Italiano</a> </li>
-                            <li class=""> <a href="/ja/">日本語</a> </li>
-                            <li class=""> <a href="/ko/">한국어</a> </li> 
-                            <li class=""> <a href="/nl/">Nederlands</a> </li> 
-                            <li class=""> <a href="/pl/">Polski</a> </li> 
-                            <li class=""> <a href="/pt/">Português</a> </li> 
-                            <li class=""> <a href="/ru/">Русский</a> </li> 
-                            <li class=""> <a href="/sv/">Svenska</a> </li> 
-                            <li class=""> <a href="/th/">ไทย</a> </li> 
-                            <li class=""> <a href="/vi/">Tiếng Việt</a> </li> 
-                            <li class="active"> <a href="/zh-cn/">中文-简体</a> 
-                            </li> <li class=""> <a href="/zh-tw/">中文-繁體</a> </li> 
-                        </ul> 
-                        </div> 
-                        </li> 
-                    </ul> 
-                </div> 
-            </div> 
-        </div> 
-    </header>
-        <main> 
-            <div class="grid-container"> 
-                <div class="h1-box"> 
-                    <h1 class="text-center">在线文件传送</h1> 
-                    <p class="h1-subtitle"> 上传一个文件，复制文件链接分享给朋友或发送到其它设备下载，轻松实现文件传送和文件分享。 </p>
-                </div> 
-                <div class="grid-x"> 
-                    <div class="cell large-12"> 
-                        <div class="tool-wrapper">
-                            <div id="appBox"></div> </div> </div> </div> </div> 
-            <div class="grid-container"> 
-                <div class="grid-x"> 
-                    <div class="cell large-12"> 
-                        <div class="section-box" style="margin-top:20px;"> 
-                            <h2>什么是即时传?</h2> 
-                            <div class="section-content"> 
-                                <p>即时传是一个在线的文件传送和分享工具，使用即时传你可以轻松将一个文件传送到其它设备或分享给家人或朋友。</p> 
-                                <p>即时传的定位是文件的传送和分享，因此并不适合用来作为文件存储工具，默认情况下，文件将会在上传后3天自动删除。</p>
-                            </div> 
-                        </div> 
-                        <div class="section-box"> 
-                            <h2>如何使用即时传？</h2> 
-                            <div class="section-content"> 
-                                <p>即时传是非常简单和易于使用的，你仅需要上传一个500MB以内的文件，即时传将会自动生成一个文件下载链接，可以通过该链接快速下载取回文件。</p> <p>上传文件后，你可以设置文件的修改密码以及访问密码，避免文件被未授权操作或下载。</p> 
-                                <p>你可以在其它设备浏览器输入下载链接快速下载文件，实现即时传送目的。也可以将下载链接分享给朋友，实现文件分发目的。</p> 
-                            </div> 
-                        </div> 
-                        <div class="faqs-box"> 
-                            <h2>常见问答</h2> 
-                            <div> 
-                                <div class="faq-item expanded"> 
-                                    <div class="faq-header"> 
-                                        <h3>即时传最大支持上传多大的文件？</h3>
-                                    </div> 
-                                    <div class="faq-content"> 
-                                        <p>作为免费用户，你可以选择最大为500MB的文件，你也可以输入高级会员码，可以改变文件限制和存储时间。</p> 
-                                        <p>未来我们将会根据实际使用情况以及运维成本，动态调整最大上传限制。</p>
-                                    </div>
-                                </div> 
-                                <div class="faq-item">
-                                    <div class="faq-header"> 
-                                        <h3>即时传支持什么格式的文件？</h3>
-                                    </div> 
-                                    <div class="faq-content"> 
-                                        <p>即时传不限制上传文件的类型，你可以上传任意格式的文件。</p> 
-                                    </div>
-                                </div>
-                                <div class="faq-item">
-                                    <div class="faq-header"> 
-                                        <h3>上传到即时传的文件可以存储多久？</h3>
-                                    </div> 
-                                    <div class="faq-content"> 
-                                        <p>文件上传到即时传后，最多可以存储3天，超过3天后文件将会被自动删除，当然，你也可以主动提前删除文件。</p> 
-                                    </div>
-                                </div> 
-                                <div class="faq-item"> 
-                                    <div class="faq-header"> 
-                                        <h3>文件删除后是否能够恢复？</h3>
-                                    </div>
-                                    <div class="faq-content"> 
-                                        <p>不能！手动删除或过期系统自动删除后，文件将被彻底删除，且无法恢复，请自行备份重要文件。</p> 
-                                    </div> 
-                                </div> 
-                                <div class="faq-item"> 
-                                    <div class="faq-header"> 
-                                        <h3>如何反馈或建议？</h3> 
-                                    </div> 
-                                    <div class="faq-content"> 
-                                        <p>如果您在使用过程中遇到错误或有产品改进建议，欢迎发送邮件告诉我们：<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="14677166627d7771546164727d78713a787d6271">[email&#160;protected]</a>。
-                                        </p>
-                                    </div>
-                                </div>
-                            </div> 
-                        </div> 
-                    </div>
-                </div> 
-            </div> 
-        </main> 
-        <footer id="footer" data-tool-alias=""> 
-            <div class="grid-container"> 
-                <div class="grid-x grid-margin-x"> 
-                        <div class="cell large-12"> 
-                            <div class="footer-nav text-center" style="margin-bottom:15px;">  <a href="/zh-cn/faqs.html">FAQs</a> <a href="/zh-cn/terms-of-service.html">服务条款</a> <a href="/zh-cn/privacy-policy.html">隐私政策</a> <a href="/zh-cn/cookie-policy.html">Cookie政策</a> </div> 
-                        <p class="copyright text-center" style="text-align:center;margin-top:15px;"> Copyright © 2024 upfile.live All Rights Reserved </p> 
-                        </div>
-                </div> 
-            </div>
-        </footer>
-        <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-        <script src="/assets/js/bundle.min.js?v=1.01"></script>
-        <script src="/assets/js/lang.min.js?v=1.21"></script> 
-        <script src="/assets/js/common.min.js?v=1.2"></script> 
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6304833918940741" crossorigin="anonymous"></script>
-        <script src="/assets/js/index.min.js?v=1.25"></script> 
-    </body>
+    <script>
+        function uploadFiles() {
+            const fileList = document.getElementById('fileInput').files;
+            const listElement = document.getElementById('fileList');
+
+            for (let i = 0; i < fileList.length; i++) {
+                const file = fileList[i];
+                const li = document.createElement('li');
+                const link = document.createElement('a');
+                const deleteButton = document.createElement('button');
+
+                link.href = URL.createObjectURL(file);
+                link.textContent = file.name;
+                link.className = 'file-link';
+                deleteButton.textContent = '删除';
+                deleteButton.onclick = () => {
+                    URL.revokeObjectURL(link.href);
+                    listElement.removeChild(li);
+                    updateLocalStorage();
+                };
+
+                li.appendChild(link);
+                li.appendChild(deleteButton);
+                listElement.appendChild(li);
+            }
+
+            updateLocalStorage();
+        }
+
+        function updateLocalStorage() {
+            const listElement = document.getElementById('fileList');
+            let data = [];
+            for (let child of listElement.children) {
+                const link = child.firstChild;
+                if (link) data.push({ name: link.textContent, url: link.href });
+            }
+            localStorage.setItem('fileList', JSON.stringify(data));
+        }
+
+        function loadFilesFromStorage() {
+            const listElement = document.getElementById('fileList');
+            const data = JSON.parse(localStorage.getItem('fileList'));
+            if (data) {
+                data.forEach(item => {
+                    const li = document.createElement('li');
+                    const link = document.createElement('a');
+                    const deleteButton = document.createElement('button');
+
+                    link.href = item.url;
+                    link.textContent = item.name;
+                    link.className = 'file-link';
+                    deleteButton.textContent = '删除';
+                    deleteButton.onclick = () => {
+                        URL.revokeObjectURL(link.href);
+                        listElement.removeChild(li);
+                        updateLocalStorage();
+                    };
+
+                    li.appendChild(link);
+                    li.appendChild(deleteButton);
+                    listElement.appendChild(li);
+                });
+            }
+        }
+
+        window.onload = loadFilesFromStorage;
+    </script>
+</body>
 </html>
