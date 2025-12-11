@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LPY's Portfolio - ������Ʒ��</title>
+    <title>LPY's Portfolio - 个人作品集</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -29,7 +29,7 @@
             min-height: 100vh;
         }
 
-        /* ������ */
+        /* 导航栏 */
         .navbar {
             background: rgba(26, 26, 46, 0.95);
             backdrop-filter: blur(10px);
@@ -90,7 +90,7 @@
             width: 100%;
         }
 
-        /* Ӣ������ */
+        /* 英雄区域 */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -161,7 +161,7 @@
             transform: translateY(-3px);
         }
 
-        /* ��Ŀչʾ */
+        /* 项目展示 */
         .projects {
             padding: 5rem 2rem;
             background: rgba(0, 0, 0, 0.5);
@@ -257,7 +257,7 @@
             color: #fff;
         }
 
-        /* ҳ�� */
+        /* 页脚 */
         footer {
             text-align: center;
             padding: 2rem;
@@ -283,7 +283,7 @@
             transform: translateY(-3px);
         }
 
-        /* ��Ӧʽ��� */
+        /* 响应式设计 */
         @media (max-width: 768px) {
             .hero {
                 flex-direction: column;
@@ -312,38 +312,38 @@
 </head>
 
 <body>
-    <!-- ������ -->
+    <!-- 导航栏 -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo">LPY's Portfolio</div>
             <div class="nav-links">
-                <a href="#home">��ҳ</a>
-                <a href="#projects">��Ʒ</a>
-                <a href="#about">����</a>
-                <a href="#contact">��ϵ</a>
+                <a href="#home">首页</a>
+                <a href="#projects">作品</a>
+                <a href="#about">关于</a>
+                <a href="#contact">联系</a>
             </div>
         </div>
     </nav>
 
-    <!-- Ӣ������ -->
+    <!-- 英雄区域 -->
     <section id="home" class="hero">
         <div class="hero-content">
-            <h1>��ӭ�����ҵ�<span class="highlight">���ִ���ռ�</span></h1>
+            <h1>欢迎来到我的<span class="highlight">数字创意空间</span></h1>
             <p>
-                ����LPY��һ���Ȱ�ǰ�˿����뽻����ƵĿ����ߡ�
-                ����չʾ���ҵĴ�����Ŀ�ͼ���̽������3D�������ִ�WebӦ�á�
+                我是LPY，一名热爱前端开发与交互设计的开发者。
+                这里展示了我的创意项目和技术探索，从3D交互到现代Web应用。
             </p>
             <div class="cta-buttons">
                 <a href="#projects" class="btn btn-primary">
-                    <i class="fas fa-rocket"></i> �鿴��Ʒ
+                    <i class="fas fa-rocket"></i> 查看作品
                 </a>
                 <a href="#contact" class="btn btn-secondary">
-                    <i class="fas fa-envelope"></i> ��ϵ��
+                    <i class="fas fa-envelope"></i> 联系我
                 </a>
             </div>
         </div>
         <div class="hero-visual">
-            <!-- ��������һ���򵥵�3DԤ���򶯻� -->
+            <!-- 可以添加一个简单的3D预览或动画 -->
             <div
                 style="width: 400px; height: 300px; background: rgba(255,255,255,0.05); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
                 <i class="fas fa-code" style="font-size: 5rem; color: var(--accent); opacity: 0.5;"></i>
@@ -351,14 +351,14 @@
         </div>
     </section>
 
-    <!-- ��Ŀչʾ -->
+    <!-- 项目展示 -->
     <section id="projects" class="projects">
-        <h2 class="section-title">�ҵ�<span class="highlight">��Ʒ��</span></h2>
+        <h2 class="section-title">我的<span class="highlight">作品集</span></h2>
         <div class="projects-grid">
-            <!-- ��Ŀ1: Made By LPY -->
+            <!-- 项目1: Made By LPY -->
             <div class="project-card">
                 <div class="project-preview">
-                    <!-- ��ĿԤ��ͼ������Խ�ͼ���3D��Ŀ��ΪͼƬ -->
+                    <!-- 项目预览图，你可以截图你的3D项目作为图片 -->
                     <img src="https://images.unsplash.com/photo-1512389142860-9c449e58a543?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                         alt="3D Christmas Tree Preview">
                 </div>
@@ -366,7 +366,7 @@
                     <h3 class="project-title">
                         <i class="fas fa-tree"></i> Made By LPY
                     </h3>
-                    <p>һ������ʽ3Dʥ������Ŀ��֧�����ƿ��ƺ�ͼ���ϴ����ܡ�</p>
+                    <p>一个交互式3D圣诞树项目，支持手势控制和图像上传功能。</p>
                     <div class="project-tags">
                         <span class="tag html">HTML5</span>
                         <span class="tag js">JavaScript</span>
@@ -375,12 +375,12 @@
                     </div>
                     <a href="projects/madeByLPY/index.html" class="btn btn-primary"
                         style="width: 100%; text-align: center; margin-top: 1rem;">
-                        <i class="fas fa-external-link-alt"></i> ������Ŀ
+                        <i class="fas fa-external-link-alt"></i> 体验项目
                     </a>
                 </div>
             </div>
 
-            <!-- δ���������Ӹ�����Ŀ��Ƭ -->
+            <!-- 未来可以添加更多项目卡片 -->
             <div class="project-card">
                 <div class="project-preview">
                     <div
@@ -390,9 +390,9 @@
                 </div>
                 <div class="project-info">
                     <h3 class="project-title">
-                        <i class="fas fa-code"></i> ��������
+                        <i class="fas fa-code"></i> 即将到来
                     </h3>
-                    <p>���ྫ����Ŀ���ڿ�����...</p>
+                    <p>更多精彩项目正在开发中...</p>
                     <div class="project-tags">
                         <span class="tag">Coming Soon</span>
                     </div>
@@ -401,20 +401,20 @@
         </div>
     </section>
 
-    <!-- ������ -->
+    <!-- 关于我 -->
     <section id="about" style="padding: 5rem 2rem; max-width: 800px; margin: 0 auto;">
-        <h2 class="section-title">����<span class="highlight">��</span></h2>
+        <h2 class="section-title">关于<span class="highlight">我</span></h2>
         <div style="text-align: center; font-size: 1.1rem; line-height: 1.8;">
-            <p>�Ȱ���̣�רע��ǰ�˼����ͽ�����ơ�ϲ��̽���¼�����������ص��û����顣</p>
-            <p style="margin-top: 1rem;">����ջ��HTML5, CSS3, JavaScript, Three.js, React, Vue.js</p>
+            <p>热爱编程，专注于前端技术和交互设计。喜欢探索新技术，创造独特的用户体验。</p>
+            <p style="margin-top: 1rem;">技术栈：HTML5, CSS3, JavaScript, Three.js, React, Vue.js</p>
         </div>
     </section>
 
-    <!-- ��ϵ�� -->
+    <!-- 联系我 -->
     <section id="contact" style="padding: 5rem 2rem; max-width: 600px; margin: 0 auto;">
-        <h2 class="section-title">��ϵ<span class="highlight">��</span></h2>
+        <h2 class="section-title">联系<span class="highlight">我</span></h2>
         <div style="text-align: center;">
-            <p>�������ҵ���Ŀ����Ȥ���к������򣬻�ӭ��ϵ��</p>
+            <p>如果你对我的项目感兴趣或有合作意向，欢迎联系：</p>
             <div class="social-links">
                 <a href="mailto:your-email@example.com" title="Email">
                     <i class="fas fa-envelope"></i>
@@ -429,14 +429,14 @@
         </div>
     </section>
 
-    <!-- ҳ�� -->
+    <!-- 页脚 -->
     <footer>
-        <p>? 2023 LPY's Portfolio. All rights reserved.</p>
-        <p style="color: #888; font-size: 0.9rem; margin-top: 0.5rem;">����̽�������ϴ���</p>
+        <p>© 2023 LPY's Portfolio. All rights reserved.</p>
+        <p style="color: #888; font-size: 0.9rem; margin-top: 0.5rem;">持续探索，不断创造</p>
     </footer>
 
     <script>
-        // ƽ������
+        // 平滑滚动
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -453,7 +453,7 @@
             });
         });
 
-        // ����������Ч��
+        // 导航栏滚动效果
         window.addEventListener('scroll', function () {
             const navbar = document.querySelector('.navbar');
             if (window.scrollY > 100) {
