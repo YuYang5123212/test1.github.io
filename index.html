@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YuYang | 个人主页</title>
+    <title>YuYang | Portfolio</title>
 
-    <!-- 引入美化字体与插件 -->
+    <!-- 字体与库 -->
     <link
         href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Inter:wght@400;500&display=swap"
         rel="stylesheet">
@@ -28,6 +28,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            scroll-behavior: smooth;
         }
 
         body {
@@ -44,7 +45,7 @@
             padding: 0 25px;
         }
 
-        /* 导航栏 - 模仿 maplezz */
+        /* 导航栏 */
         nav {
             padding: 80px 0 60px;
             display: flex;
@@ -65,39 +66,33 @@
             color: var(--text-light);
             margin-left: 24px;
             font-size: 0.95rem;
-            transition: color 0.3s;
         }
 
         .nav-links a:hover {
             color: var(--text);
         }
 
-        /* 视图动画 */
+        /* 内容区 */
         #view {
             animation: fadeIn 0.4s ease;
+            min-height: 60vh;
         }
 
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(5px);
             }
 
             to {
                 opacity: 1;
-                transform: translateY(0);
             }
         }
 
-        /* 列表样式 */
+        /* 列表项 */
         h1.page-title {
             font-family: var(--font-serif);
             font-size: 2.2rem;
             margin-bottom: 40px;
-        }
-
-        .list-section {
-            margin-top: 40px;
         }
 
         .list-item {
@@ -105,12 +100,10 @@
             text-decoration: none;
             padding: 20px 0;
             border-bottom: 1px solid var(--border);
-            transition: 0.2s;
         }
 
         .list-item:hover {
-            background: #fafafa;
-            padding-left: 5px;
+            opacity: 0.6;
         }
 
         .item-meta {
@@ -125,59 +118,70 @@
             color: var(--text);
         }
 
-        /* 文章详情 */
-        .back-link {
-            display: inline-block;
+        /* 回到顶部按钮 */
+        #backToTop {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--text);
+            color: white;
+            border: none;
             cursor: pointer;
-            color: var(--text-light);
-            font-size: 0.9rem;
-            margin-bottom: 40px;
-            text-decoration: none;
+            display: none;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, opacity 0.3s;
         }
 
-        .back-link:hover {
-            color: var(--text);
+        #backToTop:hover {
+            transform: translateY(-5px);
+        }
+
+        #backToTop svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        /* 文章内媒体适配 */
+        .post-content img,
+        .post-content video {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 25px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .post-content pre {
+            background: #f8f8f8;
+            padding: 1.2rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 25px 0;
         }
 
         .post-header {
             margin-bottom: 50px;
         }
 
-        .post-content {
-            font-size: 1.05rem;
-        }
-
-        .post-content h1,
-        .post-content h2,
-        .post-content h3 {
-            font-family: var(--font-serif);
-            margin: 1.8em 0 0.8em;
-        }
-
-        .post-content p {
-            margin-bottom: 1.5em;
-        }
-
-        .post-content pre {
-            background: #f8f8f8;
-            padding: 1.2rem;
-            border-radius: 6px;
-            overflow-x: auto;
-            margin: 25px 0;
-            border: 1px solid #eee;
-        }
-
-        .post-content img {
-            max-width: 100%;
-            border-radius: 4px;
-            margin: 20px 0;
+        .back-link {
+            display: inline-block;
+            color: var(--text-light);
+            text-decoration: none;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
         }
 
         footer {
-            padding: 80px 0 40px;
+            padding: 100px 0 50px;
             color: #ddd;
-            font-size: 0.8rem;
             text-align: center;
+            font-size: 0.8rem;
             font-family: var(--font-serif);
         }
     </style>
@@ -191,17 +195,22 @@
             <div class="nav-links">
                 <a href="#/blog">Blog</a>
                 <a href="#/projects">Projects</a>
-                <a href="https://github.com/YuYang5123212" target="_blank">Github</a>
             </div>
         </nav>
 
         <main id="view"></main>
-
-        <footer>SIMPLE & CLEAN.</footer>
+        <footer>LESS IS MORE.</footer>
     </div>
 
+    <!-- 回到顶部按钮 -->
+    <button id="backToTop" onclick="scrollToTop()">
+        <svg viewBox="0 0 24 24">
+            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z" />
+        </svg>
+    </button>
+
     <script>
-        // 1. 数据配置：这里严格使用你仓库中的文件名
+        // 1. 数据配置
         const BLOG_POSTS = [
             {
                 id: 'tinypix-env',
@@ -222,75 +231,93 @@
             { title: '3D Interactive Tree', desc: 'Three.js 交互式 3D 艺术实验', link: 'projects/madeByLPY/index.html' }
         ];
 
-        // 2. 核心路由与跳转逻辑 (类似 SPA)
+        // 2. 自定义 Markdown 解析逻辑（修复媒体路径与视频显示）
+        const renderer = new marked.Renderer();
+
+        // 拦截图片语法，处理视频和相对路径
+        renderer.image = function (href, title, text) {
+            // 如果是相对路径，自动指向 posts 文件夹
+            let src = href;
+            if (!href.startsWith('http') && !href.startsWith('/')) {
+                src = 'posts/' + href;
+            }
+
+            // 识别视频格式
+            const videoExts = ['.mp4', '.webm', '.ogg', '.mov'];
+            const isVideo = videoExts.some(ext => src.toLowerCase().endsWith(ext));
+
+            if (isVideo) {
+                return `<video controls playsinline poster="">
+                        <source src="${src}" type="video/mp4">
+                        您的浏览器不支持视频播放。
+                    </video>`;
+            }
+            return `<img src="${src}" alt="${text}" title="${title || ''}">`;
+        };
+
+        marked.setOptions({ renderer: renderer });
+
+        // 3. 路由逻辑
         const render = async () => {
             const hash = window.location.hash || '#/';
             const view = document.getElementById('view');
+            scrollToTop();
 
-            // 首页路由
-            if (hash === '#/') {
-                view.innerHTML = `
-                <h1 class="page-title">Thoughts.</h1>
-                <div class="list-section">
-                    ${BLOG_POSTS.map(post => `
-                        <a href="#/post/${post.id}" class="list-item">
-                            <div class="item-meta">${post.date}</div>
-                            <div class="item-title">${post.title}</div>
-                        </a>
-                    `).join('')}
-                </div>
-            `;
+            if (hash === '#/' || hash === '#/blog') {
+                view.innerHTML = `<h1 class="page-title">Writing.</h1>` +
+                    BLOG_POSTS.map(post => `
+                    <a href="#/post/${post.id}" class="list-item">
+                        <div class="item-meta">${post.date}</div>
+                        <div class="item-title">${post.title}</div>
+                    </a>
+                `).join('');
             }
-            // 博客列表
-            else if (hash === '#/blog') {
-                view.innerHTML = `<h1 class="page-title">Blog.</h1>${renderPostList()}`;
-            }
-            // 项目列表
             else if (hash === '#/projects') {
-                view.innerHTML = `<h1 class="page-title">Projects.</h1>${renderProjectList()}`;
+                view.innerHTML = `<h1 class="page-title">Projects.</h1>` +
+                    PROJECTS.map(p => `
+                    <a href="${p.link}" class="list-item" ${p.link.startsWith('http') ? 'target="_blank"' : ''}>
+                        <div class="item-title">${p.title}</div>
+                        <div class="item-meta">${p.desc}</div>
+                    </a>
+                `).join('');
             }
-            // 文章正文页 (跳转逻辑核心)
             else if (hash.startsWith('#/post/')) {
                 const id = hash.replace('#/post/', '');
                 const post = BLOG_POSTS.find(p => p.id === id);
                 if (post) {
-                    view.innerHTML = `<p style="color:#999">Loading story...</p>`;
+                    view.innerHTML = `<p>Loading...</p>`;
                     try {
-                        const response = await fetch(post.file);
-                        const md = await response.text();
+                        const res = await fetch(post.file);
+                        const md = await res.text();
                         view.innerHTML = `
                         <a href="#/" class="back-link">← Back</a>
                         <div class="post-header">
-                            <h1 style="font-family:var(--font-serif); font-size:2.4rem; line-height:1.3;">${post.title}</h1>
-                            <p style="color:var(--text-light); margin-top:15px;">Published on ${post.date}</p>
+                            <h1 style="font-family:var(--font-serif); font-size:2.5rem; line-height:1.2;">${post.title}</h1>
+                            <p style="color:var(--text-light); margin-top:15px;">${post.date}</p>
                         </div>
                         <article class="post-content">${marked.parse(md)}</article>
                     `;
-                        Prism.highlightAll(); // 代码高亮渲染
+                        Prism.highlightAll();
                     } catch (e) {
-                        view.innerHTML = `<p>Error loading article.</p>`;
+                        view.innerHTML = `<p>加载失败，请检查文件是否存在。</p>`;
                     }
                 }
             }
         };
 
-        function renderPostList() {
-            return BLOG_POSTS.map(post => `
-            <a href="#/post/${post.id}" class="list-item">
-                <div class="item-meta">${post.date}</div>
-                <div class="item-title">${post.title}</div>
-            </a>
-        `).join('');
+        // 4. 回到顶部逻辑
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function renderProjectList() {
-            return PROJECTS.map(p => `
-            <a href="${p.link}" class="list-item" ${p.link.startsWith('http') ? 'target="_blank"' : ''}>
-                <div class="item-title">${p.title}</div>
-                <div class="item-meta">${p.desc}</div>
-            </a>
-        `).join('');
-        }
+        window.onscroll = function () {
+            const btn = document.getElementById("backToTop");
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                btn.style.display = "block";
+            } else {
+                btn.style.display = "none";
+            }
+        };
 
         window.addEventListener('hashchange', render);
         window.addEventListener('load', render);
