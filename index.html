@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YuYang | Portfolio</title>
 
-    <!-- 1. 资源加载 -->
+    <!-- 1. 基础资源 -->
     <link
         href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Inter:wght@400;500&display=swap"
         rel="stylesheet">
@@ -74,9 +74,9 @@
             color: var(--text);
         }
 
-        /* 内容动画 */
+        /* 内容过渡动画 */
         #view {
-            animation: fadeIn 0.5s ease;
+            animation: fadeIn 0.4s ease;
             min-height: 60vh;
         }
 
@@ -92,7 +92,7 @@
             }
         }
 
-        /* 列表项 */
+        /* 列表样式 */
         .list-item {
             display: block;
             text-decoration: none;
@@ -119,22 +119,22 @@
             font-family: var(--font-serif);
         }
 
-        /* 回到顶部按钮 - 磨砂白蓝风格 */
+        /* 回到顶部按钮 - 果系半透明磨砂白 */
         #backToTop {
             position: fixed;
             bottom: 40px;
             right: 40px;
-            width: 52px;
-            height: 52px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.85);
             color: var(--accent);
             border: 1px solid rgba(0, 0, 0, 0.05);
             cursor: pointer;
             display: none;
             z-index: 100;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(12px);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             align-items: center;
             justify-content: center;
@@ -142,7 +142,7 @@
 
         #backToTop:hover {
             transform: scale(1.1);
-            background: var(--bg);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
         }
 
         #backToTop svg {
@@ -155,19 +155,20 @@
             stroke-linejoin: round;
         }
 
-        /* 文章详情 */
+        /* 文章媒体适配 */
         .post-content img,
         .post-content video {
             max-width: 100%;
             height: auto;
             display: block;
-            margin: 40px auto;
-            border-radius: 12px;
+            margin: 35px auto;
+            border-radius: 10px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
         }
 
         .post-content video {
             background: #000;
+            outline: none;
         }
 
         .post-content pre {
@@ -227,7 +228,7 @@
     </button>
 
     <script>
-        // 1. 数据配置 - 直接写死绝对正确的相对路径
+        // 1. 数据配置 (严格对应你的文件夹路径)
         const BLOG_POSTS = [
             {
                 id: 'tinypix-env',
@@ -248,31 +249,33 @@
             { title: '3D Interactive Tree', desc: 'Three.js 交互式 3D 艺术实验', link: 'projects/madeByLPY/index.html' }
         ];
 
-        // 2. 媒体解析重写
+        // 2. 媒体解析算法修复 (针对 posts/image/ 结构)
         const renderer = new marked.Renderer();
         renderer.image = function (href, title, text) {
             let src = href;
 
             // 核心修复逻辑：
-            // 只要路径包含 "image/"，就强制认为它是根目录下的 image 文件夹，不受 MD 文件位置影响
-            if (src.includes('image/')) {
-                // 提取 image 之后的部分，统一指向 /image/
-                const fileName = src.split('image/').pop();
-                src = 'image/' + fileName;
-            } else if (!src.startsWith('http')) {
-                // 其他普通的相对路径补全 posts/
+            // 你的图片写在 md 里通常是 ./image/xxx.png
+            // 由于 index.html 在根目录，实际访问路径应该是 posts/image/xxx.png
+            if (src.startsWith('./image/')) {
+                src = 'posts/image/' + src.split('./image/')[1];
+            } else if (src.startsWith('image/')) {
+                src = 'posts/image/' + src.split('image/')[1];
+            } else if (!src.startsWith('http') && !src.startsWith('/')) {
                 src = 'posts/' + src;
             }
 
-            // 视频识别
+            // 视频识别与渲染
             const isVideo = /\.(mp4|webm|ogg|mov|MP4)$/i.test(src.split('?')[0]);
             if (isVideo) {
-                return `<video controls playsinline preload="metadata">
-                        <source src="${src}" type="video/mp4">
+                // 对视频路径进行编码，防止中文路径失效
+                const encodedSrc = encodeURI(src);
+                return `<video controls playsinline preload="metadata" style="width:100%">
+                        <source src="${encodedSrc}" type="video/mp4">
                         您的浏览器不支持视频播放。
                     </video>`;
             }
-            return `<img src="${src}" alt="${text || ''}" title="${title || ''}">`;
+            return `<img src="${encodeURI(src)}" alt="${text || ''}" title="${title || ''}">`;
         };
         marked.setOptions({ renderer: renderer });
 
@@ -304,13 +307,11 @@
                 const id = hash.replace('#/post/', '');
                 const post = BLOG_POSTS.find(p => p.id === id);
                 if (post) {
-                    view.innerHTML = `<p style="color:#ccc; font-size:0.9rem; padding:40px 0;">Loading Article...</p>`;
+                    view.innerHTML = `<p style="color:#ccc; font-size:0.9rem; padding:40px 0;">Reading...</p>`;
                     try {
-                        // 核心修复：手动拼接 URL 并进行严格编码
-                        const url = window.location.origin + window.location.pathname.replace('index.html', '') + post.file;
-                        const res = await fetch(encodeURI(url));
-
-                        if (!res.ok) throw new Error('404');
+                        // 修复：直接使用相对路径并 encodeURI 
+                        const res = await fetch(encodeURI(post.file));
+                        if (!res.ok) throw new Error();
                         const md = await res.text();
 
                         view.innerHTML = `
@@ -325,15 +326,15 @@
                     } catch (e) {
                         view.innerHTML = `
                         <div style="padding:60px 0; text-align:center;">
-                            <p style="color:#e74c3c; margin-bottom:10px;">读取失败</p>
-                            <p style="color:#999; font-size:0.8rem;">请检查仓库中是否存在文件：<br><code>${post.file}</code></p>
+                            <p style="color:#e74c3c; margin-bottom:10px;">Article Load Failed</p>
+                            <p style="color:#999; font-size:0.8rem;">Path: <code>${post.file}</code></p>
                         </div>`;
                     }
                 }
             }
         };
 
-        // 4. 工具逻辑
+        // 4. 回到顶部逻辑
         function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
         window.onscroll = function () {
             const btn = document.getElementById("backToTop");
