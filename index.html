@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YuYang | Portfolio</title>
 
+    <!-- 1. 资源加载 -->
     <link
         href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Inter:wght@400;500&display=swap"
         rel="stylesheet">
@@ -18,7 +19,7 @@
             --bg: #ffffff;
             --text: #1a1a1a;
             --text-light: #86868b;
-            --border: #f0f0f0;
+            --border: #f2f2f2;
             --accent: #007aff;
             --font-serif: 'Noto Serif SC', serif;
             --font-sans: 'Inter', sans-serif;
@@ -35,7 +36,7 @@
             background: var(--bg);
             color: var(--text);
             font-family: var(--font-sans);
-            line-height: 1.7;
+            line-height: 1.8;
             -webkit-font-smoothing: antialiased;
         }
 
@@ -45,6 +46,7 @@
             padding: 0 25px;
         }
 
+        /* 导航 */
         nav {
             padding: 80px 0 60px;
             display: flex;
@@ -65,76 +67,82 @@
             color: var(--text-light);
             margin-left: 24px;
             font-size: 0.95rem;
+            font-weight: 500;
         }
 
         .nav-links a:hover {
             color: var(--text);
         }
 
+        /* 内容动画 */
         #view {
-            animation: fadeIn 0.4s ease;
+            animation: fadeIn 0.5s ease;
             min-height: 60vh;
         }
 
         @keyframes fadeIn {
             from {
                 opacity: 0;
+                transform: translateY(10px);
             }
 
             to {
                 opacity: 1;
+                transform: translateY(0);
             }
         }
 
+        /* 列表项 */
         .list-item {
             display: block;
             text-decoration: none;
-            padding: 22px 0;
+            padding: 25px 0;
             border-bottom: 1px solid var(--border);
+            transition: 0.2s;
         }
 
         .list-item:hover {
             opacity: 0.6;
+            padding-left: 5px;
         }
 
         .item-meta {
             font-size: 0.85rem;
             color: var(--text-light);
-            margin-bottom: 4px;
+            margin-bottom: 5px;
         }
 
         .item-title {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             font-weight: 500;
             color: var(--text);
             font-family: var(--font-serif);
         }
 
-        /* 回到顶部按钮 - 简约白蓝色调 */
+        /* 回到顶部按钮 - 磨砂白蓝风格 */
         #backToTop {
             position: fixed;
             bottom: 40px;
             right: 40px;
-            width: 48px;
-            height: 48px;
+            width: 52px;
+            height: 52px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.8);
             color: var(--accent);
-            border: 1px solid #eee;
+            border: 1px solid rgba(0, 0, 0, 0.05);
             cursor: pointer;
             display: none;
             z-index: 100;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            backdrop-filter: blur(5px);
-            transition: all 0.3s;
-            display: flex;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             align-items: center;
             justify-content: center;
         }
 
         #backToTop:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+            transform: scale(1.1);
+            background: var(--bg);
         }
 
         #backToTop svg {
@@ -147,39 +155,39 @@
             stroke-linejoin: round;
         }
 
-        /* 媒体适配修复 */
+        /* 文章详情 */
         .post-content img,
         .post-content video {
             max-width: 100%;
             height: auto;
             display: block;
-            margin: 30px auto;
-            border-radius: 8px;
+            margin: 40px auto;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
         }
 
         .post-content video {
             background: #000;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
         .post-content pre {
-            background: #f8f8f8;
-            padding: 1.2rem;
-            border-radius: 8px;
+            background: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: 10px;
             overflow-x: auto;
-            margin: 25px 0;
-            border: 1px solid #eee;
+            margin: 30px 0;
+            border: 1px solid var(--border);
         }
 
         .post-header {
-            margin-bottom: 50px;
+            margin: 60px 0 80px;
         }
 
         .back-link {
             display: inline-block;
             color: var(--text-light);
             text-decoration: none;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             font-size: 0.95rem;
             font-weight: 500;
         }
@@ -189,11 +197,11 @@
         }
 
         footer {
-            padding: 100px 0 50px;
-            color: #ddd;
+            padding: 120px 0 60px;
+            color: #eee;
             text-align: center;
             font-size: 0.8rem;
-            font-family: var(--font-serif);
+            letter-spacing: 2px;
         }
     </style>
 </head>
@@ -208,12 +216,10 @@
                 <a href="#/projects">Projects</a>
             </div>
         </nav>
-
         <main id="view"></main>
-        <footer>SIMPLE & CLEAN.</footer>
+        <footer>MIND THE GAP.</footer>
     </div>
 
-    <!-- 修正后的回到顶部按钮 -->
     <button id="backToTop" onclick="scrollToTop()">
         <svg viewBox="0 0 24 24">
             <polyline points="18 15 12 9 6 15"></polyline>
@@ -221,7 +227,7 @@
     </button>
 
     <script>
-        // 1. 数据配置 - 使用完全匹配的文件名
+        // 1. 数据配置 - 直接写死绝对正确的相对路径
         const BLOG_POSTS = [
             {
                 id: 'tinypix-env',
@@ -242,20 +248,24 @@
             { title: '3D Interactive Tree', desc: 'Three.js 交互式 3D 艺术实验', link: 'projects/madeByLPY/index.html' }
         ];
 
-        // 2. 增强型 Markdown 渲染 (修复媒体路径)
+        // 2. 媒体解析重写
         const renderer = new marked.Renderer();
-
         renderer.image = function (href, title, text) {
             let src = href;
-            // 如果路径已经是 ./image/ 开头，由于 index.html 在根目录，直接使用即可，无需修改
-            // 如果是其他相对路径且不以 http 开头，则补全 posts/ 前缀
-            if (!src.startsWith('http') && !src.startsWith('./image') && !src.startsWith('image/')) {
+
+            // 核心修复逻辑：
+            // 只要路径包含 "image/"，就强制认为它是根目录下的 image 文件夹，不受 MD 文件位置影响
+            if (src.includes('image/')) {
+                // 提取 image 之后的部分，统一指向 /image/
+                const fileName = src.split('image/').pop();
+                src = 'image/' + fileName;
+            } else if (!src.startsWith('http')) {
+                // 其他普通的相对路径补全 posts/
                 src = 'posts/' + src;
             }
 
-            const videoExts = ['.mp4', '.webm', '.ogg', '.mov'];
-            const isVideo = videoExts.some(ext => src.toLowerCase().split('?')[0].endsWith(ext));
-
+            // 视频识别
+            const isVideo = /\.(mp4|webm|ogg|mov|MP4)$/i.test(src.split('?')[0]);
             if (isVideo) {
                 return `<video controls playsinline preload="metadata">
                         <source src="${src}" type="video/mp4">
@@ -264,10 +274,9 @@
             }
             return `<img src="${src}" alt="${text || ''}" title="${title || ''}">`;
         };
-
         marked.setOptions({ renderer: renderer });
 
-        // 3. 路由逻辑 (加入 URL 编码修复)
+        // 3. 页面渲染与 Fetch 修复
         const render = async () => {
             const hash = window.location.hash || '#/';
             const view = document.getElementById('view');
@@ -295,14 +304,17 @@
                 const id = hash.replace('#/post/', '');
                 const post = BLOG_POSTS.find(p => p.id === id);
                 if (post) {
-                    view.innerHTML = `<p style="color:#999">Fetching content...</p>`;
+                    view.innerHTML = `<p style="color:#ccc; font-size:0.9rem; padding:40px 0;">Loading Article...</p>`;
                     try {
-                        // 修复点：使用 encodeURI 处理中文路径
-                        const res = await fetch(encodeURI(post.file));
-                        if (!res.ok) throw new Error('File not found');
+                        // 核心修复：手动拼接 URL 并进行严格编码
+                        const url = window.location.origin + window.location.pathname.replace('index.html', '') + post.file;
+                        const res = await fetch(encodeURI(url));
+
+                        if (!res.ok) throw new Error('404');
                         const md = await res.text();
+
                         view.innerHTML = `
-                        <a href="#/" class="back-link">← Return to Index</a>
+                        <a href="#/" class="back-link">← Index</a>
                         <div class="post-header">
                             <h1 style="font-family:var(--font-serif); font-size:2.6rem; line-height:1.2;">${post.title}</h1>
                             <p style="color:var(--text-light); margin-top:15px; font-size:0.9rem;">${post.date}</p>
@@ -311,24 +323,21 @@
                     `;
                         Prism.highlightAll();
                     } catch (e) {
-                        view.innerHTML = `<div style="padding:40px 0; color:#e74c3c;">文章加载失败。请确保文件路径为: <br><code>${post.file}</code></div>`;
+                        view.innerHTML = `
+                        <div style="padding:60px 0; text-align:center;">
+                            <p style="color:#e74c3c; margin-bottom:10px;">读取失败</p>
+                            <p style="color:#999; font-size:0.8rem;">请检查仓库中是否存在文件：<br><code>${post.file}</code></p>
+                        </div>`;
                     }
                 }
             }
         };
 
-        // 4. 回到顶部逻辑
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
+        // 4. 工具逻辑
+        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
         window.onscroll = function () {
             const btn = document.getElementById("backToTop");
-            if (document.body.scrollTop > 400 || document.documentElement.scrollTop > 400) {
-                btn.style.display = "flex";
-            } else {
-                btn.style.display = "none";
-            }
+            btn.style.display = (document.documentElement.scrollTop > 400) ? "flex" : "none";
         };
 
         window.addEventListener('hashchange', render);
