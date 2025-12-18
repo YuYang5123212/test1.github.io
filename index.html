@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YuYang | Portfolio</title>
 
-    <!-- 1. 外部资源 -->
+    <!-- 引入资源 -->
     <link
         href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Inter:wght@400;500&display=swap"
         rel="stylesheet">
@@ -21,6 +21,7 @@
             --text-light: #86868b;
             --border: #f2f2f2;
             --accent: #007aff;
+            /* 蓝色箭头 */
             --font-serif: 'Noto Serif SC', serif;
             --font-sans: 'Inter', sans-serif;
         }
@@ -46,7 +47,7 @@
             padding: 0 25px;
         }
 
-        /* 极简导航 */
+        /* 导航 */
         nav {
             padding: 80px 0 60px;
             display: flex;
@@ -73,7 +74,7 @@
             color: var(--text);
         }
 
-        /* 视图区 */
+        /* 视图动画 */
         #view {
             animation: fadeIn 0.4s ease;
             min-height: 60vh;
@@ -82,7 +83,7 @@
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(10px);
+                transform: translateY(5px);
             }
 
             to {
@@ -97,7 +98,6 @@
             text-decoration: none;
             padding: 25px 0;
             border-bottom: 1px solid var(--border);
-            transition: 0.2s;
         }
 
         .list-item:hover {
@@ -111,7 +111,7 @@
         }
 
         .item-title {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             font-weight: 600;
             color: var(--text);
             font-family: var(--font-serif);
@@ -127,11 +127,11 @@
             border-radius: 50%;
             background: #ffffff;
             color: var(--accent);
-            border: 1px solid #eeeeee;
+            border: 1px solid #e0e0e0;
             cursor: pointer;
             display: none;
             z-index: 100;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
             align-items: center;
             justify-content: center;
@@ -139,20 +139,20 @@
 
         #backToTop:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
         }
 
         #backToTop svg {
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             fill: none;
             stroke: currentColor;
-            stroke-width: 2.5;
+            stroke-width: 3;
             stroke-linecap: round;
             stroke-linejoin: round;
         }
 
-        /* 文章内容样式 */
+        /* 文章媒体适配 */
         .post-content img,
         .post-content video {
             max-width: 100%;
@@ -160,7 +160,7 @@
             display: block;
             margin: 40px auto;
             border-radius: 8px;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
         }
 
         .post-content pre {
@@ -190,6 +190,7 @@
             text-align: center;
             font-size: 0.8rem;
             letter-spacing: 2px;
+            font-family: var(--font-serif);
         }
     </style>
 </head>
@@ -205,7 +206,7 @@
             </div>
         </nav>
         <main id="view"></main>
-        <footer>MIND THE GAP.</footer>
+        <footer>SIMPLE IS THE BEST.</footer>
     </div>
 
     <!-- 回到顶部按钮 -->
@@ -216,16 +217,16 @@
     </button>
 
     <script>
-        // 1. 基础配置 (文件名必须与 GitHub 仓库 100% 一致)
+        // 1. 数据配置 (严格对应截图文件名)
         const BLOG_POSTS = [
             {
-                id: 'tinypix-env',
+                id: 'env-issues',
                 title: '配置TinyPiX环境过程中遇到的问题及应对',
                 date: '2025-10-14',
                 file: 'posts/配置TinyPiX环境过程中遇到的问题及应对.md'
             },
             {
-                id: 'tinypix-hardware',
+                id: 'hardware-log',
                 title: 'TinyPiX家庭智能屏-温湿度计模块-串口数据部分开发历程',
                 date: '2025-10-24',
                 file: 'posts/TinyPiX家庭智能屏-温湿度计模块-串口数据部分开发历程.md'
@@ -237,41 +238,41 @@
             { title: '3D Interactive Tree', desc: 'Three.js 交互式 3D 艺术实验', link: 'projects/madeByLPY/index.html' }
         ];
 
-        // 2. 核心：修复图片和视频路径逻辑
+        // 2. 核心修复：媒体路径重定向逻辑
         const renderer = new marked.Renderer();
         renderer.image = function (href, title, text) {
             let src = href;
 
-            // 关键修复：由于 .md 文件在 posts 目录下，其引用的 ./image/ 
-            // 实际物理路径是 posts/image/。
-            // 代码需要把相对路径前缀统一修正为相对于 index.html 的路径。
-            if (src.startsWith('./image/')) {
-                src = 'posts/image/' + src.split('./image/')[1];
-            } else if (src.startsWith('image/')) {
-                src = 'posts/image/' + src.split('image/')[1];
-            } else if (!src.startsWith('http')) {
-                src = 'posts/' + src;
+            // 诊断与修复：如果路径包含 "image/" 且文档在根目录 index.html 运行
+            // 我们必须强行将路径指向 posts/image/
+            if (src.includes('image/')) {
+                // 提取文件名部分，拼接正确物理路径
+                const parts = src.split('image/');
+                const fileName = parts[parts.length - 1];
+                src = 'posts/image/' + fileName;
             }
 
-            const isVideo = /\.(mp4|webm|ogg|mov)$/i.test(src.split('?')[0]);
+            // 视频拦截逻辑
+            const isVideo = /\.(mp4|webm|mov|ogg)$/i.test(src);
             if (isVideo) {
-                return `<video controls playsinline preload="metadata" style="width:100%">
+                return `<video controls playsinline preload="metadata" style="width:100%; border-radius:8px;">
                         <source src="${encodeURI(src)}" type="video/mp4">
-                        您的浏览器不支持视频播放。
+                        您的浏览器不支持视频。
                     </video>`;
             }
+            // 普通图片渲染 (使用 encodeURI 解决中文路径问题)
             return `<img src="${encodeURI(src)}" alt="${text || ''}" title="${title || ''}">`;
         };
         marked.setOptions({ renderer: renderer });
 
-        // 3. 路由与加载
+        // 3. 路由与加载逻辑 (含中文路径 Fetch 修复)
         const render = async () => {
             const hash = window.location.hash || '#/';
             const view = document.getElementById('view');
             window.scrollTo(0, 0);
 
             if (hash === '#/' || hash === '#/blog') {
-                view.innerHTML = `<h1 style="font-family:var(--font-serif);font-size:2.2rem;margin-bottom:40px;">Writing.</h1>` +
+                view.innerHTML = `<h1 style="font-family:var(--font-serif); font-size:2.2rem; margin-bottom:40px;">Writing.</h1>` +
                     BLOG_POSTS.map(post => `
                     <a href="#/post/${post.id}" class="list-item">
                         <div class="item-meta">${post.date}</div>
@@ -280,7 +281,7 @@
                 `).join('');
             }
             else if (hash === '#/projects') {
-                view.innerHTML = `<h1 style="font-family:var(--font-serif);font-size:2.2rem;margin-bottom:40px;">Projects.</h1>` +
+                view.innerHTML = `<h1 style="font-family:var(--font-serif); font-size:2.2rem; margin-bottom:40px;">Projects.</h1>` +
                     PROJECTS.map(p => `
                     <a href="${p.link}" class="list-item" ${p.link.startsWith('http') ? 'target="_blank"' : ''}>
                         <div class="item-title">${p.title}</div>
@@ -292,35 +293,44 @@
                 const id = hash.replace('#/post/', '');
                 const post = BLOG_POSTS.find(p => p.id === id);
                 if (post) {
-                    view.innerHTML = `<p style="color:#ccc; padding:40px 0;">Loading...</p>`;
+                    view.innerHTML = `<p style="color:#999; padding:40px 0;">Loading...</p>`;
                     try {
-                        // 核心修复：GitHub Pages 必须对中文路径进行严格的 URI 编码
-                        const fetchPath = encodeURI(post.file);
-                        const res = await fetch(fetchPath);
-                        if (!res.ok) throw new Error('404');
-                        const md = await res.text();
+                        // 【关键修复点】针对中文路径进行双重安全获取
+                        const response = await fetch(encodeURI(post.file));
+                        if (!response.ok) throw new Error('404');
+                        const md = await response.text();
 
                         view.innerHTML = `
-                        <a href="#/" class="back-link">← Index</a>
+                        <a href="#/" class="back-link">← 返回首页</a>
                         <div class="post-header">
-                            <h1 style="font-family:var(--font-serif); font-size:2.6rem; line-height:1.2;">${post.title}</h1>
+                            <h1 style="font-family:var(--font-serif); font-size:2.5rem; line-height:1.2;">${post.title}</h1>
                             <p style="color:var(--text-light); margin-top:15px; font-size:0.9rem;">${post.date}</p>
                         </div>
                         <article class="post-content">${marked.parse(md)}</article>
                     `;
                         Prism.highlightAll();
                     } catch (e) {
-                        view.innerHTML = `<div style="padding:60px 0; color:red;">加载失败。无法找到文件：<br><code>${post.file}</code></div>`;
+                        view.innerHTML = `<div style="padding:60px 0; color:#ff4d4f;">
+                        <h3>加载失败</h3>
+                        <p style="color:#999; font-size:0.8rem; margin-top:10px;">
+                            找不到文件: <code>${post.file}</code><br>
+                            请检查文件名是否包含特殊符号，或确保文件已提交。
+                        </p>
+                    </div>`;
                     }
                 }
             }
         };
 
-        // 4. 回到顶部逻辑
+        // 4. 回到顶部功能
         function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
         window.onscroll = function () {
             const btn = document.getElementById("backToTop");
-            btn.style.display = (document.documentElement.scrollTop > 400) ? "flex" : "none";
+            if (document.documentElement.scrollTop > 400) {
+                btn.style.display = "flex";
+            } else {
+                btn.style.display = "none";
+            }
         };
 
         window.addEventListener('hashchange', render);
