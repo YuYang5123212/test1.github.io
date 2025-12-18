@@ -4,66 +4,491 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YuYang 的个人主页</title>
+    <title>YuYang | Portfolio</title>
     <link rel="icon" href="favicon.ico">
-    <link rel="stylesheet" href="style.css">
+
+    <!-- 引入库 -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #fdfcfb;
+            /* 极轻微米色 */
+            --text-main: #1a1a1a;
+            --text-sec: #757575;
+            --border-color: #eeeeee;
+            --font-serif: 'Noto Serif SC', serif;
+            --font-sans: 'Inter', -apple-system, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        /* 导航栏 */
+        nav {
+            padding: 60px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .nav-logo {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--text-main);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-sec);
+            font-size: 0.9rem;
+            font-weight: 400;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--text-main);
+        }
+
+        /* 内容容器视图 */
+        #view {
+            animation: pageFade 0.5s ease forwards;
+            min-height: 70vh;
+        }
+
+        @keyframes pageFade {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 首页内容展示 */
+        .home-section {
+            padding: 40px 0;
+        }
+
+        .home-title {
+            font-family: var(--font-serif);
+            font-size: 3rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .home-bio {
+            font-size: 1.1rem;
+            color: var(--text-sec);
+            max-width: 600px;
+            margin-bottom: 60px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 80px;
+        }
+
+        .info-block h3 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-sec);
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .info-list {
+            list-style: none;
+        }
+
+        .info-list li {
+            margin-bottom: 10px;
+            font-weight: 400;
+        }
+
+        /* 列表通用样式 (Blog & Projects) */
+        .list-header {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+        }
+
+        .item-card {
+            display: block;
+            text-decoration: none;
+            padding: 30px 0;
+            border-bottom: 1px solid var(--border-color);
+            transition: 0.3s;
+        }
+
+        .item-card:hover {
+            opacity: 0.6;
+        }
+
+        .item-meta {
+            font-size: 0.8rem;
+            color: var(--text-sec);
+            margin-bottom: 8px;
+            font-family: var(--font-sans);
+        }
+
+        .item-title {
+            font-size: 1.4rem;
+            font-family: var(--font-serif);
+            color: var(--text-main);
+        }
+
+        /* 文章阅读器样式 */
+        .article-wrap {
+            padding-bottom: 100px;
+        }
+
+        .article-title {
+            font-family: var(--font-serif);
+            font-size: 2.8rem;
+            line-height: 1.2;
+            margin: 40px 0 20px;
+        }
+
+        .article-info {
+            color: var(--text-sec);
+            font-size: 0.9rem;
+            margin-bottom: 60px;
+        }
+
+        #md-content {
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        #md-content h1,
+        #md-content h2,
+        #md-content h3 {
+            font-family: var(--font-serif);
+            margin: 2em 0 1em;
+        }
+
+        #md-content p {
+            margin-bottom: 1.5em;
+        }
+
+        #md-content img,
+        #md-content video {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 40px auto;
+            border-radius: 4px;
+        }
+
+        #md-content video {
+            background: #000;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+        }
+
+        #md-content pre {
+            background: #f6f6f6;
+            padding: 20px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 30px 0;
+            border: 1px solid #eee;
+        }
+
+        /* 回到顶部按钮 */
+        #btn-top {
+            position: fixed;
+            bottom: 50px;
+            right: 50px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #fff;
+            border: 1px solid #ddd;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        #btn-top:hover {
+            transform: translateY(-5px);
+            border-color: #1a1a1a;
+        }
+
+        #btn-top svg {
+            width: 20px;
+            height: 20px;
+            stroke: #1a1a1a;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        footer {
+            padding: 100px 0 60px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #bbb;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 768px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .home-title {
+                font-size: 2.2rem;
+            }
+
+            #btn-top {
+                bottom: 30px;
+                right: 30px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <header>
-        <h1>YuYang's Space</h1>
-        <nav>
-            <a href="#">主页</a>
-            <a href="LPY.html">圣诞树</a>
-            <a href="https://github.com/YuYang5123212">GitHub</a>
-        </nav>
-    </header>
-
     <div class="container">
-        <!-- 个人简介区 -->
-        <div class="card" style="grid-column: 1 / -1;">
-            <h2>👋 欢迎</h2>
-            <p>这是我的个人主页，记录了 TinyPiX 的开发历程以及一些有趣的前端项目。</p>
-        </div>
-
-        <!-- 项目 1: 圣诞树 (学弟的作品) -->
-        <div class="card tree-card">
-            <div class="media-preview">
-                <!-- 这里用一个简单的 emoji 或截图代替 -->
-                <span style="font-size: 3rem;">🎄</span>
+        <nav>
+            <a href="#/" class="nav-logo">YuYang.</a>
+            <div class="nav-links">
+                <a href="#/" id="nav-home">Home</a>
+                <a href="#/blog" id="nav-blog">Blog</a>
+                <a href="#/projects" id="nav-projects">Projects</a>
             </div>
-            <h2>前端圣诞树</h2>
-            <p>一个基于 HTML/CSS 的动态圣诞树项目。</p>
-            <a href="LPY.html" class="btn" target="_blank">点击查看演示</a>
-        </div>
+        </nav>
 
-        <!-- 博客 1: 环境配置 -->
-        <div class="card">
-            <div class="media-preview">
-                <!-- 引用你提供的图片 -->
-                <img src="./image/修改.png" alt="配置报错截图">
-            </div>
-            <h2>TinyPiX 环境配置避坑指南</h2>
-            <p>记录了配置环境过程中遇到的问题及解决方案。</p>
-            <a href="pages/env_config.html" class="btn">阅读文档</a>
-        </div>
+        <main id="view">
+            <!-- 视图由 JS 动态注入 -->
+        </main>
 
-        <!-- 博客 2: 串口开发 -->
-        <div class="card">
-            <div class="media-preview">
-                <!-- 引用你提供的视频作为封面 (静音自动播放) -->
-                <video src="./image/温湿度计-获取串口数据部分.mp4" muted loop autoplay></video>
-            </div>
-            <h2>TinyPiX 智能屏开发日志</h2>
-            <p>温湿度计模块 - 串口数据获取部分的实录。</p>
-            <a href="pages/serial_dev.html" class="btn">观看视频与记录</a>
-        </div>
+        <footer>&copy; 2025 YuYang. ALL RIGHTS RESERVED.</footer>
     </div>
 
-    <footer style="text-align: center; padding: 20px; color: #999;">
-        &copy; 2025 YuYang. Hosted on GitHub Pages.
-    </footer>
+    <div id="btn-top" onclick="window.scrollTo(0,0)">
+        <svg viewBox="0 0 24 24">
+            <path d="M12 19V5M5 12l7-7 7 7" />
+        </svg>
+    </div>
+
+    <script>
+        // ---------------------------------------------------------
+        // 1. 数据配置 (严格匹配你的文件结构)
+        // ---------------------------------------------------------
+        const BLOG_POSTS = [
+            {
+                id: 'post1',
+                title: '配置TinyPiX环境过程中遇到的问题及应对',
+                date: '2025.10.24',
+                file: 'posts/配置TinyPiX环境过程中遇到的问题及应对.md'
+            },
+            {
+                id: 'post2',
+                title: 'TinyPiX家庭智能屏-温湿度计模块-串口数据部分开发历程',
+                date: '2025.10.24',
+                file: 'posts/TinyPiX家庭智能屏-温湿度计模块-串口数据部分开发历程.md'
+            }
+        ];
+
+        const PROJECTS = [
+            { title: 'ATAC 智能门禁系统', meta: 'Embedded / HarmonyOS', link: 'https://github.com/YuYang5123212/ATAC' },
+            { title: '3D Interactive Tree', meta: 'Web Graphics / Three.js', link: 'projects/madeByLPY/index.html' },
+            { title: 'TinyPiX 智能屏方案', meta: 'Hardware Development', link: '#/blog' }
+        ];
+
+        // ---------------------------------------------------------
+        // 2. 增强型 Markdown 渲染引擎
+        // ---------------------------------------------------------
+        const renderer = new marked.Renderer();
+
+        // 媒体路径修正逻辑
+        renderer.image = function (href, title, text) {
+            let src = href;
+            // 如果路径包含 image/ 关键词，不管它原来写在哪里，统统修正到根目录的 posts/image/
+            if (src.includes('image/')) {
+                const fileName = src.split('/').pop();
+                src = 'posts/image/' + fileName;
+            }
+
+            const isVideo = /\.(mp4|webm|mov|MP4)$/i.test(src);
+            if (isVideo) {
+                return `<video controls playsinline preload="metadata">
+                        <source src="${encodeURI(src)}" type="video/mp4">
+                        您的浏览器不支持视频播放。
+                    </video>`;
+            }
+            return `<img src="${encodeURI(src)}" alt="${text || ''}" title="${title || ''}">`;
+        };
+        marked.setOptions({ renderer, breaks: true });
+
+        // ---------------------------------------------------------
+        // 3. 极简 SPA 路由系统
+        // ---------------------------------------------------------
+        const router = async () => {
+            const hash = window.location.hash || '#/';
+            const view = document.getElementById('view');
+
+            // 更新导航状态
+            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+
+            // 视图切换
+            if (hash === '#/') {
+                document.getElementById('nav-home').classList.add('active');
+                renderHome();
+            }
+            else if (hash === '#/blog') {
+                document.getElementById('nav-blog').classList.add('active');
+                renderBlogList();
+            }
+            else if (hash === '#/projects') {
+                document.getElementById('nav-projects').classList.add('active');
+                renderProjectList();
+            }
+            else if (hash.startsWith('#/post/')) {
+                const postId = hash.replace('#/post/', '');
+                renderPostDetail(postId);
+            }
+        };
+
+        // --- 渲染首页 ---
+        function renderHome() {
+            const view = document.getElementById('view');
+            view.innerHTML = `
+            <div class="home-section">
+                <h1 class="home-title">Creative Engineer<br>& IoT Explorer.</h1>
+                <p class="home-bio">你好，我是 YuYang。专注于嵌入式硬件开发与 HarmonyOS 生态探索。在这里分享我的技术课设与创意实验。</p>
+                
+                <div class="info-grid">
+                    <div class="info-block">
+                        <h3>Tech Stacks</h3>
+                        <ul class="info-list">
+                            <li>HarmonyOS / ArkTS</li>
+                            <li>Embedded C / Arduino</li>
+                            <li>Three.js / Web Graphics</li>
+                            <li>STM32 Development</li>
+                        </ul>
+                    </div>
+                    <div class="info-block">
+                        <h3>Interests</h3>
+                        <ul class="info-list">
+                            <li>物联网交互设计</li>
+                            <li>工业美学</li>
+                            <li>摄影与影像记录</li>
+                            <li>极简主义生活</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        `;
+        }
+
+        // --- 渲染博客列表 ---
+        function renderBlogList() {
+            const view = document.getElementById('view');
+            const items = BLOG_POSTS.map(p => `
+            <a href="#/post/${p.id}" class="item-card">
+                <div class="item-meta">${p.date}</div>
+                <div class="item-title">${p.title}</div>
+            </a>
+        `).join('');
+            view.innerHTML = `<h1 class="list-header">Notes.</h1>` + items;
+        }
+
+        // --- 渲染项目列表 ---
+        function renderProjectList() {
+            const view = document.getElementById('view');
+            const items = PROJECTS.map(p => `
+            <a href="${p.link}" class="item-card" ${p.link.startsWith('http') ? 'target="_blank"' : ''}>
+                <div class="item-meta">${p.meta}</div>
+                <div class="item-title">${p.title}</div>
+            </a>
+        `).join('');
+            view.innerHTML = `<h1 class="list-header">Works.</h1>` + items;
+        }
+
+        // --- 渲染文章详情 (核心修正点) ---
+        async function renderPostDetail(id) {
+            const view = document.getElementById('view');
+            const post = BLOG_POSTS.find(p => p.id === id);
+            if (!post) return;
+
+            view.innerHTML = `<p style="padding:100px 0; color:#999; text-align:center;">读取中...</p>`;
+
+            try {
+                // 对文件名进行严格编码处理
+                const encodedPath = encodeURI(post.file);
+                const res = await fetch(encodedPath);
+                if (!res.ok) throw new Error('404');
+                const md = await res.text();
+
+                view.innerHTML = `
+                <div class="article-wrap">
+                    <a href="#/blog" style="text-decoration:none; color:var(--text-sec); font-size:0.9rem;">← 返回列表</a>
+                    <h1 class="article-title">${post.title}</h1>
+                    <div class="article-info">Published on ${post.date} / Written by YuYang</div>
+                    <div id="md-content">${marked.parse(md)}</div>
+                </div>
+            `;
+                Prism.highlightAll();
+            } catch (e) {
+                view.innerHTML = `<div style="padding:100px 0; text-align:center;">文章加载失败。请确保文件 <code>${post.file}</code> 存在。</div>`;
+            }
+        }
+
+        // --- 工具逻辑 ---
+        window.onscroll = () => {
+            const btn = document.getElementById('btn-top');
+            btn.style.display = window.scrollY > 400 ? 'flex' : 'none';
+        };
+
+        window.addEventListener('hashchange', router);
+        window.addEventListener('load', router);
+    </script>
 
 </body>
 
