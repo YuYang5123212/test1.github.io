@@ -4,355 +4,271 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YuYang's Space | 个人作品集</title>
-    <!-- 引入图标库 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>YuYang | Portfolio & Blog</title>
+    <!-- 引入解析 Markdown 的库 -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
-        /* 基础样式重置 */
+        :root {
+            --bg: #ffffff;
+            --text-main: #1a1a1a;
+            --text-sec: #666666;
+            --border: #eeeeee;
+            --accent: #007AFF;
+            /* 经典果系蓝 */
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
-        }
-
-        :root {
-            --primary-bg: #0a0a12;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --accent-color: #00d2ff;
-            /* 科技蓝 */
-            --accent-glow: rgba(0, 210, 255, 0.3);
-            --text-main: #ffffff;
-            --text-dim: #b0b0b0;
-            --gradient: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
         }
 
         body {
-            background-color: var(--primary-bg);
-            background-image:
-                radial-gradient(circle at 20% 30%, rgba(58, 123, 213, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 80% 70%, rgba(0, 210, 255, 0.1) 0%, transparent 40%);
+            background: var(--bg);
             color: var(--text-main);
-            line-height: 1.6;
-            overflow-x: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.8;
+        }
+
+        /* 布局容器 */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
 
         /* 导航栏 */
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 1.5rem 10%;
+        nav {
+            padding: 40px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(10, 10, 18, 0.8);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: 2px;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
         }
 
         .nav-links a {
-            color: var(--text-dim);
             text-decoration: none;
-            transition: 0.3s;
+            color: var(--text-sec);
+            margin-left: 25px;
             font-size: 0.9rem;
-            text-transform: uppercase;
+            transition: 0.2s;
         }
 
         .nav-links a:hover {
-            color: var(--accent-color);
+            color: var(--text-main);
         }
 
-        /* Hero 区域 */
-        .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 0 10%;
+        /* Hero 简介 */
+        header {
+            padding: 60px 0;
+            border-bottom: 1px solid var(--border);
         }
 
-        .hero h1 {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: fadeInDown 1s ease;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            color: var(--text-dim);
-            max-width: 600px;
-            margin-bottom: 2rem;
-            animation: fadeInUp 1s ease 0.2s backwards;
-        }
-
-        /* 项目展示区 */
-        .section-title {
-            text-align: center;
-            margin: 4rem 0 3rem;
+        h1 {
             font-size: 2.5rem;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
         }
 
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2.5rem;
-            padding: 0 10% 5rem;
-            max-width: 1400px;
-            margin: 0 auto;
+        .bio {
+            color: var(--text-sec);
+            font-size: 1.1rem;
         }
 
-        .project-card {
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
+        /* 列表区域 */
+        section {
+            padding: 60px 0;
         }
 
-        .project-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--accent-color);
-            box-shadow: 0 10px 30px var(--accent-glow);
+        .section-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-sec);
+            margin-bottom: 30px;
         }
 
-        .project-image {
-            height: 200px;
-            width: 100%;
-            background: #1a1a2e;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .project-image i {
-            font-size: 4rem;
-            color: rgba(255, 255, 255, 0.1);
-        }
-
-        /* 为门禁项目设置特定背景颜色 */
-        .bg-atac {
-            background: linear-gradient(45deg, #1e3c72, #2a5298);
-        }
-
-        .bg-lpy {
-            background: linear-gradient(45deg, #0f2027, #203a43, #2c5364);
-        }
-
-        .project-content {
-            padding: 1.5rem;
-        }
-
-        .project-tag {
-            display: inline-block;
-            padding: 0.2rem 0.8rem;
-            border-radius: 50px;
-            background: rgba(0, 210, 255, 0.1);
-            color: var(--accent-color);
-            font-size: 0.75rem;
-            margin-bottom: 0.8rem;
-            border: 1px solid var(--accent-glow);
-        }
-
-        .project-content h3 {
-            margin-bottom: 0.5rem;
-            font-size: 1.4rem;
-        }
-
-        .project-content p {
-            color: var(--text-dim);
-            font-size: 0.95rem;
-            margin-bottom: 1.5rem;
-            height: 4.5rem;
-            /* 统一高度 */
-            overflow: hidden;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .btn {
-            padding: 0.6rem 1.2rem;
-            border-radius: 10px;
+        /* 项目/文章项卡片 */
+        .item {
+            margin-bottom: 40px;
             text-decoration: none;
-            font-size: 0.9rem;
+            display: block;
+            transition: 0.2s;
+        }
+
+        .item:hover .item-title {
+            color: var(--accent);
+        }
+
+        .item-title {
+            font-size: 1.3rem;
             font-weight: 600;
-            transition: 0.3s;
+            color: var(--text-main);
+            margin-bottom: 5px;
+        }
+
+        .item-meta {
+            font-size: 0.85rem;
+            color: var(--text-sec);
             display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            gap: 15px;
         }
 
-        .btn-main {
-            background: var(--gradient);
-            color: white;
+        .tag {
+            color: var(--accent);
+            font-weight: 500;
         }
 
-        .btn-outline {
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
+        /* 博客阅读器模式 (点击后显示) */
+        #reader {
+            display: none;
+            padding-bottom: 100px;
         }
 
-        .btn-outline:hover {
-            background: rgba(255, 255, 255, 0.1);
+        .back-btn {
+            cursor: pointer;
+            color: var(--accent);
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+            display: inline-block;
         }
 
-        /* 动画 */
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        #markdown-content img {
+            max-width: 100%;
+            border-radius: 8px;
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        #markdown-content pre {
+            background: #f6f8fa;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
         }
 
         footer {
-            text-align: center;
-            padding: 4rem 0;
-            color: var(--text-dim);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .nav-links {
-                display: none;
-            }
+            padding: 60px 0;
+            border-top: 1px solid var(--border);
+            color: #999;
+            font-size: 0.8rem;
         }
     </style>
 </head>
 
 <body>
-    <nav class="navbar">
-        <div class="logo">YUYANG.IO</div>
-        <div class="nav-links">
-            <a href="#home">首页</a>
-            <a href="#projects">项目</a>
-            <a href="https://github.com/YuYang5123212" target="_blank">GITHUB</a>
-        </div>
-    </nav>
 
-    <section id="home" class="hero">
-        <h1>探索硬件与代码的边界</h1>
-        <p>你好，我是 YuYang。一名专注于物联网开发与交互设计的入门者。在这里分享我的技术课设与创意实验。</p>
-        <div class="btn-group">
-            <a href="#projects" class="btn btn-main">查看项目</a>
-            <a href="mailto:your-email@example.com" class="btn btn-outline">联系我</a>
-        </div>
-    </section>
+    <div class="container">
+        <!-- 导航 -->
+        <nav>
+            <div class="logo" onclick="showHome()">YuYang.</div>
+            <div class="nav-links">
+                <a href="#projects" onclick="showHome()">项目</a>
+                <a href="#blog" onclick="showHome()">博客</a>
+                <a href="https://github.com/YuYang5123212" target="_blank">Github</a>
+            </div>
+        </nav>
 
-    <section id="projects">
-        <h2 class="section-title">精选项目</h2>
-        <div class="projects-grid">
+        <!-- 主页内容 -->
+        <div id="home-view">
+            <header>
+                <h1>YuYang</h1>
+                <p class="bio">嵌入式开发 / 鸿蒙应用探索者。在这里记录技术点滴。</p>
+            </header>
 
-            <!-- 项目1: ATAC 智能门禁 -->
-            <div class="project-card">
-                <div class="project-image bg-atac">
-                    <i class="fas fa-id-card-clip"></i>
-                </div>
-                <div class="project-content">
-                    <span class="project-tag">Arduino + HarmonyOS</span>
-                    <h3>ATAC 智能门禁系统</h3>
-                    <p>基于嵌入式开发与鸿蒙系统的智能锁方案。实现硬件端身份校验与移动端远程管理。基于C++开发，重点攻克了串口通信与权限管理模块。</p>
-                    <div class="btn-group">
-                        <a href="https://github.com/YuYang5123212/ATAC" target="_blank" class="btn btn-main">
-                            <i class="fab fa-github"></i> 源码
-                        </a>
+            <!-- 项目展示 -->
+            <section id="projects">
+                <h2 class="section-title">Projects</h2>
+
+                <a href="https://github.com/YuYang5123212/ATAC" class="item" target="_blank">
+                    <div class="item-title">ATAC 智能门禁系统</div>
+                    <div class="item-meta">
+                        <span class="tag">Hardware</span>
+                        <span>基于 Arduino 与 HarmonyOS 的安全锁方案</span>
+                    </div>
+                </a>
+
+                <a href="projects/madeByLPY/index.html" class="item">
+                    <div class="item-title">3D Interactive Tree</div>
+                    <div class="item-meta">
+                        <span class="tag">WebGraphics</span>
+                        <span>Three.js 交互式 3D 艺术实验</span>
+                    </div>
+                </a>
+            </section>
+
+            <!-- 博客文章列表 -->
+            <section id="blog">
+                <h2 class="section-title">Blog</h2>
+
+                <!-- 博客文章 1 -->
+                <div class="item" style="cursor: pointer;" onclick="loadMarkdown('posts/harmonyos-basics.md')">
+                    <div class="item-title">HarmonyOS NEXT 学习笔记（一）：ArkTS 基础</div>
+                    <div class="item-meta">
+                        <span>2024-03-20</span>
+                        <span class="tag">HarmonyOS</span>
                     </div>
                 </div>
-            </div>
 
-            <!-- 项目2: Made By LPY -->
-            <div class="project-card">
-                <div class="project-image bg-lpy">
-                    <i class="fas fa-tree"></i>
-                </div>
-                <div class="project-content">
-                    <span class="project-tag">Three.js / WebGL</span>
-                    <h3>3D 交互圣诞树</h3>
-                    <p>一个富有创意的交互式3D圣诞树项目。支持鼠标手势控制旋转、灯光切换及个性化图片上传，展示了Web端高级动画渲染技术。</p>
-                    <div class="btn-group">
-                        <a href="projects/madeByLPY/index.html" class="btn btn-main">
-                            <i class="fas fa-rocket"></i> 立即预览
-                        </a>
+                <!-- 博客文章 2 -->
+                <div class="item" style="cursor: pointer;" onclick="loadMarkdown('posts/harmonyos-lifecycle.md')">
+                    <div class="item-title">HarmonyOS NEXT 学习笔记（二）：生命周期管理</div>
+                    <div class="item-meta">
+                        <span>2024-03-21</span>
+                        <span class="tag">HarmonyOS</span>
                     </div>
                 </div>
-            </div>
 
-            <!-- 占位项目 -->
-            <div class="project-card" style="opacity: 0.5;">
-                <div class="project-image">
-                    <i class="fas fa-ellipsis"></i>
-                </div>
-                <div class="project-content">
-                    <span class="project-tag">未来计划</span>
-                    <h3>更多项目载入中...</h3>
-                    <p>持续学习 Vue.js、Node.js 与更多嵌入式开发知识中，新作品将不定期更新。</p>
-                </div>
-            </div>
-
+                <!-- CSDN 外部链接示例 (如果你不想转MD) -->
+                <a href="https://blog.csdn.net/2301_79395495/article/details/153827233" class="item" target="_blank">
+                    <div class="item-title">查看更多 CSDN 博客文章</div>
+                    <div class="item-meta"><span>访问我的外部专栏</span></div>
+                </a>
+            </section>
         </div>
-    </section>
 
-    <footer>
-        <p>&copy; 2025 YuYang. 基于 GitHub Pages 部署</p>
-    </footer>
+        <!-- 阅读器内容 -->
+        <div id="reader">
+            <div class="back-btn" onclick="showHome()">← 返回主页</div>
+            <div id="markdown-content">
+                <!-- Markdown 渲染后的内容会出现在这里 -->
+            </div>
+        </div>
+
+        <footer>
+            &copy; 2025 YuYang. Built with Minimalist Style.
+        </footer>
+    </div>
 
     <script>
-        // 平滑滚动
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
+        // 简单的路由切换逻辑
+        async function loadMarkdown(path) {
+            try {
+                const response = await fetch(path);
+                if (!response.ok) throw new Error('文件未找到');
+                const text = await response.text();
+
+                // 使用 marked 解析内容
+                document.getElementById('markdown-content').innerHTML = marked.parse(text);
+
+                // 切换视图
+                document.getElementById('home-view').style.display = 'none';
+                document.getElementById('reader').style.display = 'block';
+                window.scrollTo(0, 0);
+            } catch (err) {
+                alert('读取 Markdown 文件失败，请确保文件存在于 ' + path);
+            }
+        }
+
+        function showHome() {
+            document.getElementById('home-view').style.display = 'block';
+            document.getElementById('reader').style.display = 'none';
+        }
     </script>
+
 </body>
 
 </html>
