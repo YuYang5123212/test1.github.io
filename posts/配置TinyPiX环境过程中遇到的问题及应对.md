@@ -62,7 +62,7 @@ this->get(&r->x, &r->y,
 
 修改如下：
 
-![1760780982821](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\1760780982821.png)
+![1760780982821](./image/修改.png)
 
 后续因突发事件，时间紧张，没有截图，为事后根据终端和代码中的记录整理得出。
 

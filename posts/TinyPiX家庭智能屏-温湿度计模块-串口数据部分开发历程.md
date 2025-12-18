@@ -1193,7 +1193,7 @@ int32_t main(int32_t argc, char *argv[]) {
 随后编译，成功运行，终端数据格式正常，窗口数据可实时变化。
 
 <video width="820" height="740" controls>
-    <source src="温湿度计-获取串口数据部分.mp4" type="video/mp4">
+    <source src="./image/温湿度计-获取串口数据部分.mp4" type="video/mp4">
 </video>
 
 后续配置dev环境后，先将代码修改到对应环境下，并尝试之前没有成功的一些方法，尽量用Tp中的方法来实现功能。
