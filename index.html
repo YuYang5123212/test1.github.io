@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YuYang | Portfolio</title>
 
-    <!-- 字体与库 -->
     <link
         href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Inter:wght@400;500&display=swap"
         rel="stylesheet">
@@ -20,6 +19,7 @@
             --text: #1a1a1a;
             --text-light: #86868b;
             --border: #f0f0f0;
+            --accent: #007aff;
             --font-serif: 'Noto Serif SC', serif;
             --font-sans: 'Inter', sans-serif;
         }
@@ -40,12 +40,11 @@
         }
 
         .container {
-            max-width: 700px;
+            max-width: 720px;
             margin: 0 auto;
             padding: 0 25px;
         }
 
-        /* 导航栏 */
         nav {
             padding: 80px 0 60px;
             display: flex;
@@ -72,7 +71,6 @@
             color: var(--text);
         }
 
-        /* 内容区 */
         #view {
             animation: fadeIn 0.4s ease;
             min-height: 60vh;
@@ -88,17 +86,10 @@
             }
         }
 
-        /* 列表项 */
-        h1.page-title {
-            font-family: var(--font-serif);
-            font-size: 2.2rem;
-            margin-bottom: 40px;
-        }
-
         .list-item {
             display: block;
             text-decoration: none;
-            padding: 20px 0;
+            padding: 22px 0;
             border-bottom: 1px solid var(--border);
         }
 
@@ -113,48 +104,62 @@
         }
 
         .item-title {
-            font-size: 1.15rem;
+            font-size: 1.2rem;
             font-weight: 500;
             color: var(--text);
+            font-family: var(--font-serif);
         }
 
-        /* 回到顶部按钮 */
+        /* 回到顶部按钮 - 简约白蓝色调 */
         #backToTop {
             position: fixed;
             bottom: 40px;
             right: 40px;
-            width: 45px;
-            height: 45px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
-            background: var(--text);
-            color: white;
-            border: none;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--accent);
+            border: 1px solid #eee;
             cursor: pointer;
             display: none;
             z-index: 100;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, opacity 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         #backToTop:hover {
             transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
         }
 
         #backToTop svg {
-            width: 20px;
-            height: 20px;
-            fill: currentColor;
+            width: 24px;
+            height: 24px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
-        /* 文章内媒体适配 */
+        /* 媒体适配修复 */
         .post-content img,
         .post-content video {
             max-width: 100%;
             height: auto;
             display: block;
-            margin: 25px auto;
+            margin: 30px auto;
             border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .post-content video {
+            background: #000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
         .post-content pre {
@@ -163,6 +168,7 @@
             border-radius: 8px;
             overflow-x: auto;
             margin: 25px 0;
+            border: 1px solid #eee;
         }
 
         .post-header {
@@ -174,7 +180,12 @@
             color: var(--text-light);
             text-decoration: none;
             margin-bottom: 30px;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            color: var(--accent);
         }
 
         footer {
@@ -199,18 +210,18 @@
         </nav>
 
         <main id="view"></main>
-        <footer>LESS IS MORE.</footer>
+        <footer>SIMPLE & CLEAN.</footer>
     </div>
 
-    <!-- 回到顶部按钮 -->
+    <!-- 修正后的回到顶部按钮 -->
     <button id="backToTop" onclick="scrollToTop()">
         <svg viewBox="0 0 24 24">
-            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z" />
+            <polyline points="18 15 12 9 6 15"></polyline>
         </svg>
     </button>
 
     <script>
-        // 1. 数据配置
+        // 1. 数据配置 - 使用完全匹配的文件名
         const BLOG_POSTS = [
             {
                 id: 'tinypix-env',
@@ -231,40 +242,39 @@
             { title: '3D Interactive Tree', desc: 'Three.js 交互式 3D 艺术实验', link: 'projects/madeByLPY/index.html' }
         ];
 
-        // 2. 自定义 Markdown 解析逻辑（修复媒体路径与视频显示）
+        // 2. 增强型 Markdown 渲染 (修复媒体路径)
         const renderer = new marked.Renderer();
 
-        // 拦截图片语法，处理视频和相对路径
         renderer.image = function (href, title, text) {
-            // 如果是相对路径，自动指向 posts 文件夹
             let src = href;
-            if (!href.startsWith('http') && !href.startsWith('/')) {
-                src = 'posts/' + href;
+            // 如果路径已经是 ./image/ 开头，由于 index.html 在根目录，直接使用即可，无需修改
+            // 如果是其他相对路径且不以 http 开头，则补全 posts/ 前缀
+            if (!src.startsWith('http') && !src.startsWith('./image') && !src.startsWith('image/')) {
+                src = 'posts/' + src;
             }
 
-            // 识别视频格式
             const videoExts = ['.mp4', '.webm', '.ogg', '.mov'];
-            const isVideo = videoExts.some(ext => src.toLowerCase().endsWith(ext));
+            const isVideo = videoExts.some(ext => src.toLowerCase().split('?')[0].endsWith(ext));
 
             if (isVideo) {
-                return `<video controls playsinline poster="">
+                return `<video controls playsinline preload="metadata">
                         <source src="${src}" type="video/mp4">
                         您的浏览器不支持视频播放。
                     </video>`;
             }
-            return `<img src="${src}" alt="${text}" title="${title || ''}">`;
+            return `<img src="${src}" alt="${text || ''}" title="${title || ''}">`;
         };
 
         marked.setOptions({ renderer: renderer });
 
-        // 3. 路由逻辑
+        // 3. 路由逻辑 (加入 URL 编码修复)
         const render = async () => {
             const hash = window.location.hash || '#/';
             const view = document.getElementById('view');
-            scrollToTop();
+            window.scrollTo(0, 0);
 
             if (hash === '#/' || hash === '#/blog') {
-                view.innerHTML = `<h1 class="page-title">Writing.</h1>` +
+                view.innerHTML = `<h1 style="font-family:var(--font-serif);font-size:2.2rem;margin-bottom:40px;">Writing.</h1>` +
                     BLOG_POSTS.map(post => `
                     <a href="#/post/${post.id}" class="list-item">
                         <div class="item-meta">${post.date}</div>
@@ -273,7 +283,7 @@
                 `).join('');
             }
             else if (hash === '#/projects') {
-                view.innerHTML = `<h1 class="page-title">Projects.</h1>` +
+                view.innerHTML = `<h1 style="font-family:var(--font-serif);font-size:2.2rem;margin-bottom:40px;">Projects.</h1>` +
                     PROJECTS.map(p => `
                     <a href="${p.link}" class="list-item" ${p.link.startsWith('http') ? 'target="_blank"' : ''}>
                         <div class="item-title">${p.title}</div>
@@ -285,21 +295,23 @@
                 const id = hash.replace('#/post/', '');
                 const post = BLOG_POSTS.find(p => p.id === id);
                 if (post) {
-                    view.innerHTML = `<p>Loading...</p>`;
+                    view.innerHTML = `<p style="color:#999">Fetching content...</p>`;
                     try {
-                        const res = await fetch(post.file);
+                        // 修复点：使用 encodeURI 处理中文路径
+                        const res = await fetch(encodeURI(post.file));
+                        if (!res.ok) throw new Error('File not found');
                         const md = await res.text();
                         view.innerHTML = `
-                        <a href="#/" class="back-link">← Back</a>
+                        <a href="#/" class="back-link">← Return to Index</a>
                         <div class="post-header">
-                            <h1 style="font-family:var(--font-serif); font-size:2.5rem; line-height:1.2;">${post.title}</h1>
-                            <p style="color:var(--text-light); margin-top:15px;">${post.date}</p>
+                            <h1 style="font-family:var(--font-serif); font-size:2.6rem; line-height:1.2;">${post.title}</h1>
+                            <p style="color:var(--text-light); margin-top:15px; font-size:0.9rem;">${post.date}</p>
                         </div>
                         <article class="post-content">${marked.parse(md)}</article>
                     `;
                         Prism.highlightAll();
                     } catch (e) {
-                        view.innerHTML = `<p>加载失败，请检查文件是否存在。</p>`;
+                        view.innerHTML = `<div style="padding:40px 0; color:#e74c3c;">文章加载失败。请确保文件路径为: <br><code>${post.file}</code></div>`;
                     }
                 }
             }
@@ -312,8 +324,8 @@
 
         window.onscroll = function () {
             const btn = document.getElementById("backToTop");
-            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-                btn.style.display = "block";
+            if (document.body.scrollTop > 400 || document.documentElement.scrollTop > 400) {
+                btn.style.display = "flex";
             } else {
                 btn.style.display = "none";
             }
