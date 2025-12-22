@@ -269,3 +269,116 @@ footer {
         right: 30px;
     }
 }
+
+/* --- 目录 (TOC) 侧边栏样式 --- */
+
+/* 1. 悬浮的目录开关按钮 */
+.toc-toggle-btn {
+    position: fixed;
+    bottom: 110px;
+    /* 在回到顶部按钮上方 */
+    right: 50px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1001;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: 0.3s;
+}
+
+.toc-toggle-btn:hover {
+    transform: translateY(-2px);
+    border-color: #1a1a1a;
+}
+
+/* 2. 侧边栏容器 */
+.toc-sidebar {
+    position: fixed;
+    top: 0;
+    right: -320px;
+    /* 默认隐藏在屏幕右侧外 */
+    width: 300px;
+    height: 100vh;
+    background: rgba(253, 252, 251, 0.98);
+    /*即便于阅读又有点毛玻璃感*/
+    backdrop-filter: blur(10px);
+    border-left: 1px solid #eee;
+    padding: 80px 30px 40px;
+    transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    z-index: 1000;
+    overflow-y: auto;
+    box-shadow: -5px 0 20px rgba(0, 0, 0, 0.02);
+}
+
+/* 激活状态：显示侧边栏 */
+.toc-sidebar.active {
+    right: 0;
+}
+
+/* 3. 目录列表样式 */
+.toc-header {
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #1a1a1a;
+}
+
+.toc-list {
+    list-style: none;
+}
+
+.toc-list li {
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.toc-link {
+    text-decoration: none;
+    color: var(--text-sec);
+    font-size: 0.9rem;
+    transition: 0.2s;
+    display: block;
+    /* 超出省略 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.toc-link:hover {
+    color: var(--text-main);
+    transform: translateX(5px);
+}
+
+/* 根据标题层级缩进 */
+.toc-level-1 {
+    padding-left: 0;
+    font-weight: 600;
+}
+
+.toc-level-2 {
+    padding-left: 15px;
+}
+
+.toc-level-3 {
+    padding-left: 30px;
+    font-size: 0.85rem;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .toc-toggle-btn {
+        bottom: 90px;
+        right: 30px;
+    }
+
+    .toc-sidebar {
+        width: 260px;
+    }
+}
