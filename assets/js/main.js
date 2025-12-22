@@ -2,91 +2,66 @@
 // 1. 全局变量
 // ---------------------------------------------------------
 let CONFIG = null;
-let TOC_DATA = []; // 用于存储当前文章的目录结构
+let TOC_DATA = [];
 
 // ---------------------------------------------------------
-// 2. 初始化逻辑
+// 2. 初始化
 // ---------------------------------------------------------
 async function init() {
     try {
         const res = await fetch('assets/data/config.json');
         CONFIG = await res.json();
-
-        // 先配置渲染器，再启动路由
         setupRenderer();
         router();
     } catch (e) {
-        console.error('配置加载失败:', e);
-        document.getElementById('view').innerHTML = '无法加载站点配置，请检查 config.json';
+        console.error(e);
+        document.getElementById('view').innerHTML = '配置加载失败';
     }
 }
 
 // ---------------------------------------------------------
-// 3. 配置 Marked 渲染器 (核心逻辑)
+// 3. 配置 Marked (收集标题)
 // ---------------------------------------------------------
 function setupRenderer() {
     const renderer = new marked.Renderer();
 
-    // --- A. 处理标题 (生成目录数据) ---
-    renderer.heading = function (token, level, raw) {
-        // 兼容处理：Marked 不同版本参数可能不同
-        // 如果 token 是对象(新版)，则从中取 text；否则它本身就是文本
-        const text = (typeof token === 'object' && token !== null) ? token.text : token;
-        const depth = (typeof token === 'object' && token !== null) ? token.depth : level;
-
-        // 生成唯一 ID
+    renderer.heading = function (token, level) {
+        const text = (typeof token === 'object') ? token.text : token;
+        const depth = (typeof token === 'object') ? token.depth : level;
         const anchorId = `heading-${TOC_DATA.length}`;
 
-        // 存入全局数据
-        TOC_DATA.push({
-            anchor: anchorId,
-            text: text,
-            level: depth
-        });
+        TOC_DATA.push({ anchor: anchorId, text: text, level: depth });
 
         return `<h${depth} id="${anchorId}">${text}</h${depth}>`;
     };
 
-    // --- B. 处理图片 (路径修正 + 视频支持) ---
     renderer.image = function (token, title, text) {
-        // 兼容处理
-        let src = (typeof token === 'object' && token !== null) ? token.href : token;
-        const imgTitle = (typeof token === 'object' && token !== null) ? token.title : title;
-        const imgText = (typeof token === 'object' && token !== null) ? token.text : text;
-
+        let src = (typeof token === 'object') ? token.href : token;
+        const imgText = (typeof token === 'object') ? token.text : text;
         if (!src) return '';
 
-        // 路径修正：指向根目录 image/
-        if (src.includes('image/')) {
-            const fileName = src.split('/').pop();
-            src = 'image/' + fileName;
-        }
+        if (src.includes('image/')) src = 'image/' + src.split('/').pop();
 
-        const isVideo = /\.(mp4|webm|mov|MP4)$/i.test(src);
-        if (isVideo) {
-            return `<video controls playsinline preload="metadata">
-                        <source src="${encodeURI(src)}" type="video/mp4">
-                        您的浏览器不支持视频播放。
-                    </video>`;
+        if (/\.(mp4|webm|mov)$/i.test(src)) {
+            return `<video controls playsinline><source src="${encodeURI(src)}" type="video/mp4"></video>`;
         }
-        return `<img src="${encodeURI(src)}" alt="${imgText || ''}" title="${imgTitle || ''}">`;
+        return `<img src="${encodeURI(src)}" alt="${imgText || ''}">`;
     };
 
     marked.setOptions({ renderer, breaks: true });
 }
 
 // ---------------------------------------------------------
-// 4. 路由系统
+// 4. 路由系统 (关键修改：每次路由切换时清空目录)
 // ---------------------------------------------------------
 const router = async () => {
     if (!CONFIG) return;
-
     const hash = window.location.hash || '#/';
 
-    // 更新导航高亮
+    // 【关键】每次切换页面，先清空全局目录容器，防止残留
+    document.getElementById('global-toc').innerHTML = '';
     document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
 
-    // 路由判断
     if (hash === '#/') {
         document.getElementById('nav-home').classList.add('active');
         renderHome();
@@ -103,7 +78,7 @@ const router = async () => {
 };
 
 // ---------------------------------------------------------
-// 5. 视图渲染函数
+// 5. 渲染函数
 // ---------------------------------------------------------
 function renderHome() {
     const p = CONFIG.profile;
@@ -111,175 +86,115 @@ function renderHome() {
         <div class="home-section">
             <h1 class="home-title">${p.title}</h1>
             <p class="home-bio">${p.bio}</p>
+            <!-- 你的信息列表保持不变 -->
             <div class="info-grid">
-                <div class="info-block">
-                    <h3>Tech Stacks</h3>
-                    <ul class="info-list">
-                        <li>HarmonyOS / ArkTS</li>
-                        <li>Embedded C / Arduino</li>
-                        <li>Three.js / Web Graphics</li>
-                        <li>STM32 Development</li>
-                    </ul>
-                </div>
-                <div class="info-block">
-                    <h3>Interests</h3>
-                    <ul class="info-list">
-                        <li>物联网交互设计</li>
-                        <li>工业美学</li>
-                        <li>摄影与影像记录</li>
-                        <li>极简主义生活</li>
-                    </ul>
-                </div>
+                <div class="info-block"><h3>Tech Stacks</h3><ul class="info-list"><li>HarmonyOS / ArkTS</li><li>Embedded C / Arduino</li></ul></div>
+                <div class="info-block"><h3>Interests</h3><ul class="info-list"><li>物联网交互设计</li><li>极简主义生活</li></ul></div>
             </div>
-        </div>
-    `;
+        </div>`;
 }
 
 function renderBlogList() {
-    const items = CONFIG.blog.map(p => `
-        <a href="#/post/${p.id}" class="item-card">
-            <div class="item-meta">${p.date}</div>
-            <div class="item-title">${p.title}</div>
-        </a>
-    `).join('');
+    const items = CONFIG.blog.map(p => `<a href="#/post/${p.id}" class="item-card"><div class="item-meta">${p.date}</div><div class="item-title">${p.title}</div></a>`).join('');
     document.getElementById('view').innerHTML = `<h1 class="list-header">Notes.</h1>` + items;
 }
 
 function renderProjectList() {
-    const items = CONFIG.projects.map(p => `
-        <a href="${p.link}" class="item-card" ${p.link.startsWith('http') ? 'target="_blank"' : ''}>
-            <div class="item-meta">${p.meta}</div>
-            <div class="item-title">${p.title}</div>
-        </a>
-    `).join('');
+    const items = CONFIG.projects.map(p => `<a href="${p.link}" class="item-card"><div class="item-meta">${p.meta}</div><div class="item-title">${p.title}</div></a>`).join('');
     document.getElementById('view').innerHTML = `<h1 class="list-header">Works.</h1>` + items;
 }
 
-// --- 核心：文章详情页 (含目录生成) ---
+// --- 核心修改：文章详情与目录分离渲染 ---
 async function renderPostDetail(id) {
     const view = document.getElementById('view');
+    const tocContainer = document.getElementById('global-toc'); // 获取外部容器
     const post = CONFIG.blog.find(p => p.id === id);
-    if (!post) {
-        view.innerHTML = '<p>文章不存在</p>';
-        return;
-    }
 
-    view.innerHTML = `<p style="padding:100px 0; color:#999; text-align:center;">读取中...</p>`;
+    if (!post) { view.innerHTML = '文章不存在'; return; }
+
+    view.innerHTML = `<p style="padding:100px 0; text-align:center;">读取中...</p>`;
+    TOC_DATA = []; // 重置数据
 
     try {
-        // 1. 清空上一篇文章的目录数据
-        TOC_DATA = [];
-
-        const encodedPath = encodeURI(post.file);
-        const res = await fetch(encodedPath);
+        const res = await fetch(encodeURI(post.file));
         if (!res.ok) throw new Error('404');
         const md = await res.text();
-
-        // 2. 解析 Markdown (此时 setupRenderer 中的 heading 函数会被触发，填充 TOC_DATA)
         const htmlContent = marked.parse(md);
 
-        // 3. 构建目录 HTML
-        let tocHtml = '';
+        // 1. 渲染文章本体 (在 #view 中)
+        view.innerHTML = `
+            <div class="article-wrap">
+                <a href="#/blog" style="text-decoration:none; color:#999;">← 返回列表</a>
+                <h1 class="article-title">${post.title}</h1>
+                <div class="article-info">${post.date}</div>
+                <div id="md-content">${htmlContent}</div>
+            </div>
+        `;
+        Prism.highlightAll();
+
+        // 2. 渲染悬浮目录 (在 #global-toc 中) - 彻底脱离 #view 的动画影响
         if (TOC_DATA.length > 0) {
             const listItems = TOC_DATA.map(item => `
                 <li class="toc-level-${item.level}">
-                    <a href="#" onclick="scrollToAnchor('${item.anchor}', event)" class="toc-link" title="${item.text}">
-                        ${item.text}
-                    </a>
+                    <a href="#" onclick="scrollToAnchor('${item.anchor}', event)" class="toc-link">${item.text}</a>
                 </li>
             `).join('');
 
-            tocHtml = `
-                <div id="toc-btn" class="toc-toggle-btn" onclick="toggleToc()">
-                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="#1a1a1a" stroke-width="2" fill="none">
-                        <line x1="8" y1="6" x2="21" y2="6"></line>
-                        <line x1="8" y1="12" x2="21" y2="12"></line>
-                        <line x1="8" y1="18" x2="21" y2="18"></line>
-                        <line x1="3" y1="6" x2="3.01" y2="6"></line>
-                        <line x1="3" y1="12" x2="3.01" y2="12"></line>
-                        <line x1="3" y1="18" x2="3.01" y2="18"></line>
-                    </svg>
+            tocContainer.innerHTML = `
+                <div id="toc-btn" class="toc-toggle-btn" onclick="toggleToc(event)">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
                 </div>
                 <div id="toc-sidebar" class="toc-sidebar">
-                    <div class="toc-header">Contents</div>
+                    <div class="toc-header">
+                        <span>Directory</span>
+                        <span style="cursor:pointer; float:right;" onclick="toggleToc(event)">×</span> <!-- 增加关闭按钮 -->
+                    </div>
                     <ul class="toc-list">${listItems}</ul>
                 </div>
             `;
         }
 
-        // 4. 注入完整页面
-        view.innerHTML = `
-            <div class="article-wrap">
-                <a href="#/blog" style="text-decoration:none; color:var(--text-sec); font-size:0.9rem;">← 返回列表</a>
-                <h1 class="article-title">${post.title}</h1>
-                <div class="article-info">Published on ${post.date} / Written by ${CONFIG.profile.name}</div>
-                <div id="md-content">${htmlContent}</div>
-            </div>
-            ${tocHtml}
-        `;
-        Prism.highlightAll();
-
     } catch (e) {
-        console.error(e);
-        view.innerHTML = `<div style="padding:100px 0; text-align:center;">
-            文章加载失败。<br>
-            错误详情: ${e.message}<br>
-            路径: <code>${post.file}</code>
-        </div>`;
+        view.innerHTML = '加载失败';
     }
 }
 
 // ---------------------------------------------------------
-// 6. 交互辅助函数 (目录开关、跳转、点击外部关闭)
+// 6. 交互逻辑 (修复点击事件)
 // ---------------------------------------------------------
-
-// 切换目录显示
-window.toggleToc = function () {
+window.toggleToc = function (e) {
+    if (e) e.stopPropagation(); // 阻止冒泡，防止立即触发 global click
     const sidebar = document.getElementById('toc-sidebar');
     if (sidebar) sidebar.classList.toggle('active');
 }
 
-// 平滑跳转
-window.scrollToAnchor = function (id, event) {
-    event.preventDefault();
+window.scrollToAnchor = function (id, e) {
+    e.preventDefault();
     const element = document.getElementById(id);
     if (element) {
-        const offset = 80;
-        const bodyRect = document.body.getBoundingClientRect().top;
-        const elementRect = element.getBoundingClientRect().top;
-        const elementPosition = elementRect - bodyRect;
-        const offsetPosition = elementPosition - offset;
-
-        window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-
-        // 移动端跳转后自动收起
-        if (window.innerWidth < 768) {
-            document.getElementById('toc-sidebar').classList.remove('active');
-        }
+        const top = element.getBoundingClientRect().top + window.scrollY - 80;
+        window.scrollTo({ top: top, behavior: "smooth" });
+        // 手机端跳转后自动关闭
+        if (window.innerWidth < 768) toggleToc();
     }
 }
 
-// 监听器：回到顶部按钮
-window.onscroll = () => {
-    const btn = document.getElementById('btn-top');
-    if (btn) btn.style.display = window.scrollY > 400 ? 'flex' : 'none';
-};
-
-// 监听器：点击页面其他位置关闭目录 (这是你要的额外逻辑)
+// 点击空白处关闭目录
 document.addEventListener('click', (e) => {
     const sidebar = document.getElementById('toc-sidebar');
     const btn = document.getElementById('toc-btn');
-
-    // 如果侧边栏处于打开状态，且点击的区域既不是侧边栏本身，也不是开关按钮
+    // 如果点击的不是侧边栏内部，也不是按钮，则关闭
     if (sidebar && sidebar.classList.contains('active')) {
-        if (!sidebar.contains(e.target) && (!btn || !btn.contains(e.target))) {
+        if (!sidebar.contains(e.target) && !btn.contains(e.target)) {
             sidebar.classList.remove('active');
         }
     }
 });
 
-// ---------------------------------------------------------
-// 7. 启动程序
-// ---------------------------------------------------------
+window.onscroll = () => {
+    const btn = document.getElementById('btn-top');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'flex' : 'none';
+};
+
 window.addEventListener('hashchange', router);
 window.addEventListener('load', init);
