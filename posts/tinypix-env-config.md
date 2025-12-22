@@ -36,7 +36,7 @@ PiXUtils/CMakeFiles/PiXUtils.dir/__/src/src/Utils/tpRect.cpp.o
 
 解决方案：
 
-手动编辑 `src/src/Utils/tpRect.cpp` 第403行：
+编辑 `src/src/Utils/tpRect.cpp` 第403行：
 
 ```cpp
 // 将这一行：

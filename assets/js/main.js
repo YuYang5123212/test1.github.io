@@ -140,9 +140,12 @@ async function renderPostDetail(id) {
         `;
         Prism.highlightAll();
     } catch (e) {
+        console.error(e); // 在控制台打印详细错误
         view.innerHTML = `<div style="padding:100px 0; text-align:center;">
-            文章加载失败。<br>请检查文件路径: <code>${post.file}</code>
-        </div>`;
+        文章加载失败。<br>
+        错误详情: ${e.message}<br>  <!-- 让它直接把错误显示在屏幕上 -->
+        路径: <code>${post.file}</code>
+    </div>`;
     }
 }
 
