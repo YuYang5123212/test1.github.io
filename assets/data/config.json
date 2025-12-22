@@ -2,26 +2,26 @@
     "profile": {
         "name": "YuYang",
         "title": "Creative Engineer<br>& IoT Explorer.",
-        "bio": "ä½ å¥½ï¼Œæˆ‘æ˜¯ YuYangã€‚ä¸“æ³¨äºåµŒå…¥å¼ç¡¬ä»¶å¼€å‘ä¸ HarmonyOS ç”Ÿæ€æ¢ç´¢ã€‚åœ¨è¿™é‡Œåˆ†äº«æˆ‘çš„æŠ€æœ¯è¯¾è®¾ä¸åˆ›æ„å®éªŒã€‚",
-        "footer": "Â© 2025 YuYang. ALL RIGHTS RESERVED."
+        "bio": "ÄãºÃ£¬ÎÒÊÇ YuYang¡£×¨×¢ÓÚÇ¶ÈëÊ½Ó²¼ş¿ª·¢Óë HarmonyOS ÉúÌ¬Ì½Ë÷¡£ÔÚÕâÀï·ÖÏíÎÒµÄ¼¼Êõ¿ÎÉèÓë´´ÒâÊµÑé¡£",
+        "footer": "? 2025 YuYang. ALL RIGHTS RESERVED."
     },
     "blog": [
         {
             "id": "post1",
-            "title": "é…ç½®TinyPiXç¯å¢ƒè¿‡ç¨‹ä¸­é‡åˆ°çš„é—®é¢˜åŠåº”å¯¹",
+            "title": "ÅäÖÃTinyPiX»·¾³¹ı³ÌÖĞÓöµ½µÄÎÊÌâ¼°Ó¦¶Ô",
             "date": "2025.10.24",
-            "file": "posts/é…ç½®TinyPiXç¯å¢ƒè¿‡ç¨‹ä¸­é‡åˆ°çš„é—®é¢˜åŠåº”å¯¹.md"
+            "file": "posts/ÅäÖÃTinyPiX»·¾³¹ı³ÌÖĞÓöµ½µÄÎÊÌâ¼°Ó¦¶Ô.md"
         },
         {
             "id": "post2",
-            "title": "TinyPiXå®¶åº­æ™ºèƒ½å±-æ¸©æ¹¿åº¦è®¡æ¨¡å—å¼€å‘å†ç¨‹",
+            "title": "TinyPiX¼ÒÍ¥ÖÇÄÜÆÁ-ÎÂÊª¶È¼ÆÄ£¿é¿ª·¢Àú³Ì",
             "date": "2025.10.24",
-            "file": "posts/TinyPiXå®¶åº­æ™ºèƒ½å±-æ¸©æ¹¿åº¦è®¡æ¨¡å—-ä¸²å£æ•°æ®éƒ¨åˆ†å¼€å‘å†ç¨‹.md"
+            "file": "posts/TinyPiX¼ÒÍ¥ÖÇÄÜÆÁ-ÎÂÊª¶È¼ÆÄ£¿é-´®¿ÚÊı¾İ²¿·Ö¿ª·¢Àú³Ì.md"
         }
     ],
     "projects": [
         {
-            "title": "ATAC æ™ºèƒ½é—¨ç¦ç³»ç»Ÿ",
+            "title": "ATAC ÖÇÄÜÃÅ½ûÏµÍ³",
             "meta": "Embedded / HarmonyOS",
             "link": "https://github.com/YuYang5123212/ATAC"
         },
@@ -31,7 +31,7 @@
             "link": "projects/LPY.html"
         },
         {
-            "title": "TinyPiX æ™ºèƒ½å±æ–¹æ¡ˆ",
+            "title": "TinyPiX ÖÇÄÜÆÁ·½°¸",
             "meta": "Hardware Development",
             "link": "#/blog"
         }
