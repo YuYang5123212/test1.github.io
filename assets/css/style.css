@@ -1,0 +1,271 @@
+:root {
+    --bg-color: #fdfcfb;
+    --text-main: #1a1a1a;
+    --text-sec: #757575;
+    --border-color: #eeeeee;
+    --font-serif: 'Noto Serif SC', serif;
+    --font-sans: 'Inter', -apple-system, sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 30px;
+}
+
+/* 导航栏 */
+nav {
+    padding: 60px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.nav-logo {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--text-main);
+}
+
+.nav-links {
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-sec);
+    font-size: 0.9rem;
+    font-weight: 400;
+    transition: 0.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--text-main);
+}
+
+/* 视图动画 */
+#view {
+    animation: pageFade 0.5s ease forwards;
+    min-height: 70vh;
+}
+
+@keyframes pageFade {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 首页 */
+.home-section {
+    padding: 40px 0;
+}
+
+.home-title {
+    font-family: var(--font-serif);
+    font-size: 3rem;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.home-bio {
+    font-size: 1.1rem;
+    color: var(--text-sec);
+    max-width: 600px;
+    margin-bottom: 60px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 80px;
+}
+
+.info-block h3 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-sec);
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.info-list {
+    list-style: none;
+}
+
+.info-list li {
+    margin-bottom: 10px;
+    font-weight: 400;
+}
+
+/* 列表通用 */
+.list-header {
+    font-family: var(--font-serif);
+    font-size: 2.5rem;
+    margin-bottom: 50px;
+}
+
+.item-card {
+    display: block;
+    text-decoration: none;
+    padding: 30px 0;
+    border-bottom: 1px solid var(--border-color);
+    transition: 0.3s;
+}
+
+.item-card:hover {
+    opacity: 0.6;
+}
+
+.item-meta {
+    font-size: 0.8rem;
+    color: var(--text-sec);
+    margin-bottom: 8px;
+    font-family: var(--font-sans);
+}
+
+.item-title {
+    font-size: 1.4rem;
+    font-family: var(--font-serif);
+    color: var(--text-main);
+}
+
+/* 文章详情 */
+.article-wrap {
+    padding-bottom: 100px;
+}
+
+.article-title {
+    font-family: var(--font-serif);
+    font-size: 2.8rem;
+    line-height: 1.2;
+    margin: 40px 0 20px;
+}
+
+.article-info {
+    color: var(--text-sec);
+    font-size: 0.9rem;
+    margin-bottom: 60px;
+}
+
+#md-content {
+    font-size: 1.1rem;
+    color: #333;
+}
+
+#md-content h1,
+#md-content h2,
+#md-content h3 {
+    font-family: var(--font-serif);
+    margin: 2em 0 1em;
+}
+
+#md-content p {
+    margin-bottom: 1.5em;
+}
+
+#md-content img,
+#md-content video {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 40px auto;
+    border-radius: 4px;
+}
+
+#md-content video {
+    background: #000;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+}
+
+#md-content pre {
+    background: #f6f6f6;
+    padding: 20px;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 30px 0;
+    border: 1px solid #eee;
+}
+
+/* 回到顶部 */
+#btn-top {
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid #ddd;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1000;
+    transition: 0.3s;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+#btn-top:hover {
+    transform: translateY(-5px);
+    border-color: #1a1a1a;
+}
+
+#btn-top svg {
+    width: 20px;
+    height: 20px;
+    stroke: #1a1a1a;
+    fill: none;
+    stroke-width: 2;
+}
+
+footer {
+    padding: 100px 0 60px;
+    text-align: center;
+    font-size: 0.75rem;
+    color: #bbb;
+    letter-spacing: 1px;
+}
+
+@media (max-width: 768px) {
+    .info-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .home-title {
+        font-size: 2.2rem;
+    }
+
+    #btn-top {
+        bottom: 30px;
+        right: 30px;
+    }
+}

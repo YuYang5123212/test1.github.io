@@ -1,0 +1,39 @@
+{
+    "profile": {
+        "name": "YuYang",
+        "title": "Creative Engineer<br>& IoT Explorer.",
+        "bio": "你好，我是 YuYang。专注于嵌入式硬件开发与 HarmonyOS 生态探索。在这里分享我的技术课设与创意实验。",
+        "footer": "? 2025 YuYang. ALL RIGHTS RESERVED."
+    },
+    "blog": [
+        {
+            "id": "post1",
+            "title": "配置TinyPiX环境过程中遇到的问题及应对",
+            "date": "2025.10.24",
+            "file": "posts/配置TinyPiX环境过程中遇到的问题及应对.md"
+        },
+        {
+            "id": "post2",
+            "title": "TinyPiX家庭智能屏-温湿度计模块开发历程",
+            "date": "2025.10.24",
+            "file": "posts/TinyPiX家庭智能屏-温湿度计模块-串口数据部分开发历程.md"
+        }
+    ],
+    "projects": [
+        {
+            "title": "ATAC 智能门禁系统",
+            "meta": "Embedded / HarmonyOS",
+            "link": "https://github.com/YuYang5123212/ATAC"
+        },
+        {
+            "title": "3D Interactive Tree",
+            "meta": "Web Graphics / Three.js",
+            "link": "projects/LPY.html"
+        },
+        {
+            "title": "TinyPiX 智能屏方案",
+            "meta": "Hardware Development",
+            "link": "#/blog"
+        }
+    ]
+}
