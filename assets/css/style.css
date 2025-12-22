@@ -28,7 +28,7 @@ body {
     padding: 0 30px;
 }
 
-/* µ¼º½À¸ */
+/* å¯¼èˆªæ  */
 nav {
     padding: 60px 0;
     display: flex;
@@ -62,7 +62,7 @@ nav {
     color: var(--text-main);
 }
 
-/* ÊÓÍ¼¶¯»­ */
+/* è§†å›¾åŠ¨ç”» */
 #view {
     animation: pageFade 0.5s ease forwards;
     min-height: 70vh;
@@ -80,7 +80,7 @@ nav {
     }
 }
 
-/* Ê×Ò³ */
+/* é¦–é¡µ */
 .home-section {
     padding: 40px 0;
 }
@@ -125,7 +125,7 @@ nav {
     font-weight: 400;
 }
 
-/* ÁĞ±íÍ¨ÓÃ */
+/* åˆ—è¡¨é€šç”¨ */
 .list-header {
     font-family: var(--font-serif);
     font-size: 2.5rem;
@@ -157,7 +157,7 @@ nav {
     color: var(--text-main);
 }
 
-/* ÎÄÕÂÏêÇé */
+/* æ–‡ç« è¯¦æƒ… */
 .article-wrap {
     padding-bottom: 100px;
 }
@@ -214,7 +214,7 @@ nav {
     border: 1px solid #eee;
 }
 
-/* »Øµ½¶¥²¿ */
+/* å›åˆ°é¡¶éƒ¨ */
 #btn-top {
     position: fixed;
     bottom: 50px;
