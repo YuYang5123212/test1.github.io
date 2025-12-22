@@ -1,39 +1,39 @@
-// È«¾Ö×´Ì¬
+// å…¨å±€çŠ¶æ€
 let CONFIG = null;
 
-// ³õÊ¼»¯
+// åˆå§‹åŒ–
 async function init() {
     try {
         const res = await fetch('assets/data/config.json');
         CONFIG = await res.json();
         setupRenderer();
-        router(); // Êı¾İ¼ÓÔØÍê±ÏºóÆô¶¯Â·ÓÉ
+        router(); // æ•°æ®åŠ è½½å®Œæ¯•åå¯åŠ¨è·¯ç”±
     } catch (e) {
-        console.error('ÅäÖÃ¼ÓÔØÊ§°Ü:', e);
-        document.getElementById('view').innerHTML = 'ÎŞ·¨¼ÓÔØÕ¾µãÅäÖÃ£¬Çë¼ì²é config.json';
+        console.error('é…ç½®åŠ è½½å¤±è´¥:', e);
+        document.getElementById('view').innerHTML = 'æ— æ³•åŠ è½½ç«™ç‚¹é…ç½®ï¼Œè¯·æ£€æŸ¥ config.json';
     }
 }
 
-// ÅäÖÃ Marked äÖÈ¾Æ÷
+// é…ç½® Marked æ¸²æŸ“å™¨
 function setupRenderer() {
     const renderer = new marked.Renderer();
 
     renderer.image = function (href, title, text) {
         let src = href;
 
-        // ĞŞÕıÂ·¾¶Âß¼­£º
-        // ¼ÙÉè Markdown ÀïĞ´µÄÊÇ "image/xxx.png" »ò "posts/image/xxx.png"
-        // Í³Ò»ÌáÈ¡ÎÄ¼şÃû£¬²¢Ö¸Ïò¸ùÄ¿Â¼µÄ image/ ÎÄ¼ş¼Ğ
+        // ä¿®æ­£è·¯å¾„é€»è¾‘ï¼š
+        // å‡è®¾ Markdown é‡Œå†™çš„æ˜¯ "image/xxx.png" æˆ– "posts/image/xxx.png"
+        // ç»Ÿä¸€æå–æ–‡ä»¶åï¼Œå¹¶æŒ‡å‘æ ¹ç›®å½•çš„ image/ æ–‡ä»¶å¤¹
         if (src.includes('image/')) {
             const fileName = src.split('/').pop();
-            src = 'image/' + fileName; // Ö¸Ïò¸ùÄ¿Â¼µÄ image ÎÄ¼ş¼Ğ
+            src = 'image/' + fileName; // æŒ‡å‘æ ¹ç›®å½•çš„ image æ–‡ä»¶å¤¹
         }
 
         const isVideo = /\.(mp4|webm|mov|MP4)$/i.test(src);
         if (isVideo) {
             return `<video controls playsinline preload="metadata">
                         <source src="${encodeURI(src)}" type="video/mp4">
-                        ÄúµÄä¯ÀÀÆ÷²»Ö§³ÖÊÓÆµ²¥·Å¡£
+                        æ‚¨çš„æµè§ˆå™¨ä¸æ”¯æŒè§†é¢‘æ’­æ”¾ã€‚
                     </video>`;
         }
         return `<img src="${encodeURI(src)}" alt="${text || ''}" title="${title || ''}">`;
@@ -41,9 +41,9 @@ function setupRenderer() {
     marked.setOptions({ renderer, breaks: true });
 }
 
-// Â·ÓÉÏµÍ³
+// è·¯ç”±ç³»ç»Ÿ
 const router = async () => {
-    if (!CONFIG) return; // µÈ´ıÅäÖÃ¼ÓÔØ
+    if (!CONFIG) return; // ç­‰å¾…é…ç½®åŠ è½½
 
     const hash = window.location.hash || '#/';
     document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
@@ -63,7 +63,7 @@ const router = async () => {
     }
 };
 
-// äÖÈ¾ÊÓÍ¼º¯Êı
+// æ¸²æŸ“è§†å›¾å‡½æ•°
 function renderHome() {
     const p = CONFIG.profile;
     document.getElementById('view').innerHTML = `
@@ -83,10 +83,10 @@ function renderHome() {
                 <div class="info-block">
                     <h3>Interests</h3>
                     <ul class="info-list">
-                        <li>ÎïÁªÍø½»»¥Éè¼Æ</li>
-                        <li>¹¤ÒµÃÀÑ§</li>
-                        <li>ÉãÓ°ÓëÓ°Ïñ¼ÇÂ¼</li>
-                        <li>¼«¼òÖ÷ÒåÉú»î</li>
+                        <li>ç‰©è”ç½‘äº¤äº’è®¾è®¡</li>
+                        <li>å·¥ä¸šç¾å­¦</li>
+                        <li>æ‘„å½±ä¸å½±åƒè®°å½•</li>
+                        <li>æç®€ä¸»ä¹‰ç”Ÿæ´»</li>
                     </ul>
                 </div>
             </div>
@@ -118,11 +118,11 @@ async function renderPostDetail(id) {
     const view = document.getElementById('view');
     const post = CONFIG.blog.find(p => p.id === id);
     if (!post) {
-        view.innerHTML = '<p>ÎÄÕÂ²»´æÔÚ</p>';
+        view.innerHTML = '<p>æ–‡ç« ä¸å­˜åœ¨</p>';
         return;
     }
 
-    view.innerHTML = `<p style="padding:100px 0; color:#999; text-align:center;">¶ÁÈ¡ÖĞ...</p>`;
+    view.innerHTML = `<p style="padding:100px 0; color:#999; text-align:center;">è¯»å–ä¸­...</p>`;
 
     try {
         const encodedPath = encodeURI(post.file);
@@ -132,7 +132,7 @@ async function renderPostDetail(id) {
 
         view.innerHTML = `
             <div class="article-wrap">
-                <a href="#/blog" style="text-decoration:none; color:var(--text-sec); font-size:0.9rem;">¡û ·µ»ØÁĞ±í</a>
+                <a href="#/blog" style="text-decoration:none; color:var(--text-sec); font-size:0.9rem;">â† è¿”å›åˆ—è¡¨</a>
                 <h1 class="article-title">${post.title}</h1>
                 <div class="article-info">Published on ${post.date} / Written by ${CONFIG.profile.name}</div>
                 <div id="md-content">${marked.parse(md)}</div>
@@ -141,12 +141,12 @@ async function renderPostDetail(id) {
         Prism.highlightAll();
     } catch (e) {
         view.innerHTML = `<div style="padding:100px 0; text-align:center;">
-            ÎÄÕÂ¼ÓÔØÊ§°Ü¡£<br>Çë¼ì²éÎÄ¼şÂ·¾¶: <code>${post.file}</code>
+            æ–‡ç« åŠ è½½å¤±è´¥ã€‚<br>è¯·æ£€æŸ¥æ–‡ä»¶è·¯å¾„: <code>${post.file}</code>
         </div>`;
     }
 }
 
-// ¼àÌıÆ÷
+// ç›‘å¬å™¨
 window.onscroll = () => {
     const btn = document.getElementById('btn-top');
     if (btn) btn.style.display = window.scrollY > 400 ? 'flex' : 'none';
