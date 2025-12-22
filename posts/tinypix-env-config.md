@@ -1,10 +1,8 @@
-# 配置TinyPiX环境过程中遇到的问题及应对
+# 配置TinyPiX环境过程中遇到的问题
 
 ## TinyPiXCore
 
 ### master分支
-
-
 
 在core中cmake，随后make至2%时，遇到问题，主要内容如下：
 
@@ -29,16 +27,12 @@ PiXUtils/CMakeFiles/PiXUtils.dir/__/src/src/Utils/tpRect.cpp.o
       |                                                      ~~~~~~~~~^
 ```
 
-
-
 问题分析：
 
 这个错误是由于 `tpRect.cpp` 中的类型不匹配导致的：
 
 - `ItpRect` 结构体中的 `w` 和 `h` 成员是 `tpUInt32*`（无符号整型指针）
 - 但 `tpRect::get` 函数期望 `int32_t*`（有符号整型指针）
-
-
 
 解决方案：
 
@@ -54,11 +48,7 @@ this->get(&r->x, &r->y,
           reinterpret_cast<int32_t*>(&r->h));
 ```
 
-
-
 然后重新make，成功继续运行。
-
-
 
 修改如下：
 
@@ -88,8 +78,6 @@ In file included from /root/TinyPiXOS/TinyPiXCore-master/PiXSingleGUI/../src/inc
 
 - 提供的函数：`int32_t (*)(int32_t, int32_t, int32_t, int32_t, int32_t, uint8_t, int32_t, void*)` - **8个参数**
 - 期望的函数：`int (*)(int, int, int, int, int, int, unsigned char, int, void*)` - **9个参数**
-
-
 
 解决方案：
 
@@ -129,8 +117,6 @@ In file included from /root/TinyPiXOS/TinyPiXCore-master/PiXSingleGUI/../src/inc
 tinyPiX_wf_send_app_state(IPiWFApiAgent *agents, int did, int rotate, int visible, int active, int color, unsigned char alpha, int screenAttr)
 ```
 
-
-
 解决方案：
 
 当前代码：
@@ -145,7 +131,7 @@ return tinyPiX_wf_send_app_state(set->agent, TP_INVALIDATE_VALUE, this->visible(
 return tinyPiX_wf_send_app_state(set->agent, TP_INVALIDATE_VALUE, 0, this->visible(), this->objectActive(), color, alpha, screenAttr);
 ```
 
-修改后make成功，随后创建文件夹`SerialPortData`，在该目录下，首先进行基础教程示例代码开发测试：
+修改后make成功，随后创建文件夹 `SerialPortData`，在该目录下，首先进行基础教程示例代码开发测试：
 
 遇到第一个问题：
 
@@ -251,9 +237,7 @@ g++ main.cpp -o button \
     -ldl
 ```
 
-重新编译正常，根据前面的情况，我先将示例代码中的`Tp`都换成`tp`，随后成功编译得到运行程序,并成功在窗口中运行。
-
-
+重新编译正常，根据前面的情况，我先将示例代码中的 `Tp`都换成 `tp`，随后成功编译得到运行程序,并成功在窗口中运行。
 
 后续更新分享App的配置情况，然后是各自dev分支下的情况。
 
@@ -261,14 +245,8 @@ g++ main.cpp -o button \
 
 cmake、make、make install时非常顺利，毫无问题，不再赘述。
 
-
-
 ## TinyPiXApp
 
 ### master分支
-
-
-
-
 
 ### dev分支
