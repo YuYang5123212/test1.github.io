@@ -185,7 +185,8 @@ document.addEventListener('click', (e) => {
     const btn = document.getElementById('toc-btn');
     // 如果点击的不是侧边栏内部，也不是按钮，则关闭
     if (sidebar && sidebar.classList.contains('active')) {
-        if (!sidebar.contains(e.target) && !btn.contains(e.target)) {
+        // 可能 btn 为 null，使用短路检查以避免 TypeError
+        if (!sidebar.contains(e.target) && !(btn && btn.contains(e.target))) {
             sidebar.classList.remove('active');
         }
     }

@@ -286,7 +286,7 @@ footer {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    z-index: 2000;
+    z-index: 2004;
     /* 确保在最上层 */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     transition: 0.3s;
@@ -309,7 +309,7 @@ footer {
     border-left: 1px solid #eee;
     padding: 30px;
     transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    z-index: 2001;
+    z-index: 2003;
     /* 必须比按钮高 */
     overflow-y: auto;
     box-shadow: -5px 0 20px rgba(0, 0, 0, 0.05);
@@ -376,4 +376,20 @@ footer {
     .toc-sidebar {
         width: 280px;
     }
+}
+
+/* 全局目录容器 — 固定在视口，避免被含有 transform 的容器影响 */
+#global-toc {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 2002;
+    pointer-events: none;
+    /* 外层不拦截事件，内部元素可启用 */
+}
+
+/* 允许内部按钮和侧栏接收事件 */
+#global-toc .toc-toggle-btn,
+#global-toc .toc-sidebar {
+    pointer-events: auto;
 }
