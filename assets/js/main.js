@@ -18,15 +18,24 @@ async function init() {
 function setupRenderer() {
     const renderer = new marked.Renderer();
 
-    renderer.image = function (href, title, text) {
-        let src = href;
+    renderer.image = function (token, title, text) {
+        // 【核心修复】：兼容新版 Marked (传入对象) 和旧版 (传入字符串)
+        // 如果第一个参数 token 是对象（新版），就从中取 href；否则它本身就是 href 字符串
+        let src = (typeof token === 'object' && token !== null) ? token.href : token;
 
-        // 修正路径逻辑：
-        // 假设 Markdown 里写的是 "image/xxx.png" 或 "posts/image/xxx.png"
-        // 统一提取文件名，并指向根目录的 image/ 文件夹
+        // 顺便获取 title 和 text (新版在 token 对象里，旧版在参数里)
+        const imgTitle = (typeof token === 'object' && token !== null) ? token.title : title;
+        const imgText = (typeof token === 'object' && token !== null) ? token.text : text;
+
+        // 安全检查：如果 src 依然为空，直接返回
+        if (!src) return '';
+
+        // --- 以下是你原有的逻辑 ---
+
+        // 路径修正
         if (src.includes('image/')) {
             const fileName = src.split('/').pop();
-            src = 'image/' + fileName; // 指向根目录的 image 文件夹
+            src = 'image/' + fileName;
         }
 
         const isVideo = /\.(mp4|webm|mov|MP4)$/i.test(src);
@@ -36,7 +45,7 @@ function setupRenderer() {
                         您的浏览器不支持视频播放。
                     </video>`;
         }
-        return `<img src="${encodeURI(src)}" alt="${text || ''}" title="${title || ''}">`;
+        return `<img src="${encodeURI(src)}" alt="${imgText || ''}" title="${imgTitle || ''}">`;
     };
     marked.setOptions({ renderer, breaks: true });
 }
